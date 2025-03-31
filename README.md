@@ -1,4 +1,4 @@
-# Tutor Virtual con LLAMA2 y Django
+# Tutor Inteligente Virtual
 
 ViLT es un chatbot diseñado para asistir a los alumnos en consultas sobre diversas asignaturas. Utiliza LLAMA2 para el procesamiento del lenguaje natural, FastAPI para crear una API robusta que maneja las consultas al modelo de lenguaje, Django para la aplicación web, y LangChain para optimizar las consultas al modelo de lenguaje. ViLT permite a los profesores subir material en PDF y gestionar la incorporación de otros profesores a las asignaturas, todo mientras recoge feedback para mejorar continuamente.
 
