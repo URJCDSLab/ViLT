@@ -1,0 +1,59 @@
+CURSO 1;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Lógica;FBR;6
+1;Matemática Discreta y Álgebra;FBR;6
+1;Fundamentos físicos de la Informática;FBR;6
+1;Introducción a la Programación;FBC;6
+1;Estadística;FBR;6
+2;Cálculo;FBR;6
+2;Principios jurídicos básicos: deontología profesional e igualdad;FBC;6
+2;Estructuras de datos;OB;6
+2;Fundamentos de Computadores;OB;6
+2;Informática y Sociedad;FBC;6
+;;;
+CURSO 2;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+Anual;Idioma Moderno;FBC;6
+1;Programación orientada a objetos;OB;6
+1;Estructura de Computadores;OB;6
+1;Bases de datos;OB;6
+1;Teoría de autómatas y lenguajes formales;OB;6
+2;Organización y Arquitectura de Computadores;OB;6
+2;Métodos Operativos y Estadísticos de Gestión;FBR;6
+2;Redes de computadores;OB;6
+2;Diseño y análisis de algoritmos;OB;6
+2;Ingeniería del software;OB;6
+;;;
+CURSO 3º;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Seguridad informática;OB;6
+1;Interacción persona-ordenador;OB;6
+1;Programación Declarativa;OB;6
+1;Estructuras de Datos Avanzadas;OB;6
+1;Sistemas Operativos;OB;6
+2;Sistemas empotrados y de Tiempo Real;OB;6
+2;Ampliación de Ingeniería del Software;OB;6
+2;Inteligencia artificial;OB;6
+2;Sistemas Distribuidos;OB;6
+2;Procesadores de Lenguajes;OB;6
+;;;
+CURSO 4;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1 / 2 ;Optativa 1;OP;6
+1;Reconocimiento académico de créditos;OB;6
+1;Optativa 2;OP;6
+2;Optativa 3;OP;6
+2;Optativa 4;OP;6
+Anual;Practicas Externas;OB;15
+Anual;Trabajo Fin de Grado;OB;15
+;;;
+OPTATIVAS;;;
+Semestre;Asignatura;Carácter;Créditos
+01-feb;Algoritmos avanzados (1º semestre - Móstoles);OP;6
+;Sistemas basados en Conocimiento (2º semestre - Vicálvaro);;
+ 1;Informática Gráfica;OP;6
+ 1;Arquitecturas Avanzadas de Computadores;OP;6
+ 1;Laboratorio de Dispositivos Móviles (Móstoles);OP ;6
+ 2;Sistemas de información;OP;6
+ 2;Programación Concurrente (Móstoles);OP;6
+ 2;Visión Artificial;OP;6

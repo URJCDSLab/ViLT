@@ -1,0 +1,64 @@
+CURSO 1;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Lógica y Matemática Discreta;FBR;6
+1;Tecnología de Computadores;OB;6
+1;Fundamentos físicos de los computadores;FBR;6
+1;Introducción a la Programación;FBR;6
+1;Estadística;FBR;6
+2;Estructura de computadores;OB;6
+2;Cálculo;FBR;6
+2;Estructuras de datos;OB;6
+2;Álgebra;FBR;6
+2;Informática y Sociedad;FBC;6
+;;;
+;;;
+;;;
+CURSO 2;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+Anual;Idioma Moderno;FBC;6
+1;Programación orientada a objetos;OB;6
+1;Organización de Computadores;OB;6
+1;Principios Jurídicos Básicos: Deontología Profesional e Igualdad;FBC;6
+1;Bases de Datos;OB;6
+2;Arquitectura de Computadores;OB;6
+2;Métodos Operativos y Estadísticos de Gestión;FBR;6
+2;Redes de computadores;OB;6
+2;Sistemas Operativos;OB;6
+2;Fundamentos de diseño de software;OB;6
+;;;
+;;;
+;;;
+CURSO 3;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Ampliación de Redes de Computadores;OB;6
+1;Ampliación de Sistemas Operativos;OB;6
+1;Diseño de Sistemas Empotrados;OB;6
+1;Interacción persona-ordenador;OB;6
+1;Programación concurrente;OB;6
+2;Lenguajes de Programación;OB;6
+2;Desarrollo de aplicaciones distribuidas;OB;6
+2;Computación de Altas Prestaciones;OB;6
+2;Dirección y Gestión de Proyectos;OB;6
+2;Sistemas Inteligentes;OB;6
+;;;
+;;;
+CURSO 4;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Optativa 1;OP;6
+1;Optativa 2;OP;6
+1;Reconocimiento académico de Créditos;OB;6
+2;Optativa 3;OP;6
+2;Optativa 4;OP;6
+Anual;Practicas Externas;OB;15
+Anual;Trabajo Fin de Grado;OB;15
+;;;
+;;;
+OPTATIVAS;OPTATIVAS;;
+Semestre;Asignatura;Carácter;Créditos
+1; Laboratorio de dispositivos móviles; OP; 6
+1; Seguridad Informática; OP; 6
+1; Algoritmos avanzados; OP; 6
+2; Máquinas secuenciales, automatas y lenguajes; OP; 6
+2; Gráficos por computador; OP; 6
+2; Visión Artificial; OP; 6
+2; Robótica y Domótica; OP; 6

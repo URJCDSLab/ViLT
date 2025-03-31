@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css')}}">
+    <title>ViLT</title>
+</head>
+<body>
+    <header>
+        <div class="image_header_vilt">
+            <form method="post" action="/reset-page">
+                <input type="hidden" name="email_hidden" value="{{email}}" />
+                <button class="iconic" type="submit">
+                    <img src= "{{url_for('static', filename='img/vilt.png')}}"
+                         alt="Vilt Logo" class="responsive" width="150" height="150">
+                </button>
+            </form>
+        </div>
+        <div class="image_header_dslab">
+            <img src= "{{url_for('static', filename='img/dslab_logo.png')}}" alt="DSLab Logo" class="responsive" width="450" height="150">
+        </div>
+    </header>
+    <main>
+        <div class="div-close">
+            <form method="post" action="/logout">
+                <input type="hidden" name="email_hidden" value="{{email}}" />
+                <label>
+                    <button class="button-close">Cerrar sesión</button>
+                </label>
+            </form>
+        </div>
+
+        <div class="text">
+            <h1 class="text-title">Administración de profesores</h1>
+            <h3>Puedes elegir tomar acciones de administración sobre los profesores.</h3>
+            <p class="title-form">Las opciones disponibles son las siguientes: <br>
+            * Recordar que para nuevos usuarios el email no debe estar registrado anteriormente.
+            </p>
+            <div class="info-admin">
+                <ul>
+                    <li>Añadir un nuevo profesor.</li>
+                    <li>Consultar la información sobre un profesor existente.</li>
+                    <li>Modificar un profesor existente.</li>
+                    <li>Eliminar un profesor existente.</li>
+                </ul>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <script>
+                        var messages = {{ messages|safe }};
+                        for (var i=0; i<messages.length; i++) {
+                            alert(messages[i]);
+                        }
+                    </script>
+                {% endif %}
+            {% endwith %}
+
+            <form class="admin-form" method="post" action="/admin-teachers">
+                <input type="hidden" name="email_hidden" value="{{email}}" />
+                <label for="select-teachers" class="title-form"> Seleccione un email:</label>
+                 <select list="teachers" name="select-teachers" style="font-family: Arial Unicode MS;"
+                         class="datalist-options" type="text" id="select-teachers">
+                    <option selected>--</option>
+                     {% for value in result -%}
+                    <option>{{value}}</option>
+                    {% endfor -%}
+                 </select>
+
+                <p class="title-form">Seleccione la opción deseada:</p>
+                 <div>
+                    <input type="radio" id="new" name="option" value="new" checked/>
+                    <label for="new">Nuevo</label>
+                </div>
+                <div>
+                    <input type="radio" id="consult" name="option" value="consult"/>
+                    <label for="consult">Consultar</label>
+                </div>
+                <div>
+                    <input type="radio" id="modify" name="option" value="modify"/>
+                    <label for="modify">Modificar</label>
+                </div>
+                <div>
+                    <input type="radio" id="delete" name="option" value="delete"/>
+                    <label for="delete">Eliminar</label>
+                </div>
+                <button id="option-click" class="action-button" type="submit">Elegir</button>
+            </form>
+        </div>
+
+        <div class="div-back">
+            <form method="post" action="/go-main-back">
+                <input type="hidden" name="email_hidden" value="{{email}}" />
+                <button class="iconic" type="submit">
+                    <img src= "{{url_for('static', filename='img/back.png')}}"
+                         alt="Back Logo" class="responsive" width="30" height="30">
+                </button>
+            </form>
+        </div>
+    </main>
+    <footer>
+         <div class="credits">
+             <p class="developers">
+                 <a href="mailto:alberto.fernandez.isabel@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Alberto Fernández Isabel</br>
+                 <a href="mailto:isaac.martin@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Isaac Martín de Diego </br>
+             </p>
+         </div>
+    </footer>
+</body>
+</html>

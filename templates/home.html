@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    <title>ViLT</title>
+</head>
+<body>
+    <header>
+        <div class="image_header_vilt">
+            <form method="post" action="/reset-page">
+                <input type="hidden" name="email_hidden" value="{{None}}" />
+                <button class="iconic" type="submit">
+                    <img src= "{{url_for('static', filename='img/vilt.png')}}"
+                         alt="Vilt Logo" class="responsive" width="150" height="150">
+                </button>
+            </form>
+        </div>
+        <div class="image_header_dslab">
+            <img src= "{{url_for('static', filename='img/dslab_logo.png')}}" alt="DSLab Logo" class="responsive" width="450" height="150">
+        </div>
+    </header>
+    <main>
+        <div class="text">
+            <h1 class="text-title">ViLT</h1>
+            <h3>¡Bienvenido a ViLT el Tutor Virtual Inteligente!</h3>
+            <p>Soy tu guía digital,
+                diseñado para acompañarte en tu viaje de aprendizaje.
+                Con mi capacidad para comprender y generar texto de manera inteligente,
+                estoy aquí para ofrecerte ayuda personalizada en cualquier tema que desees explorar.
+                ¡Seguro que podré adaptarme a tus necesidades y estilo de aprendizaje!
+                Y no te olvides de que mi objetivo es hacer que tu experiencia de aprendizaje sea eficiente,
+                divertida y altamente efectiva.
+                Utilizando la última tecnología en procesamiento de lenguaje natural,
+                puedo responder a tus preguntas, proporcionar explicaciones detalladas y ofrecer ejercicios
+                prácticos para reforzar tu comprensión. </br></br>
+                ¡Estoy emocionado de empezar este viaje contigo! </br>
+                ¿En qué puedo ayudarte hoy?</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <script>
+                    var messages = {{ messages|safe }};
+                    for (var i=0; i<messages.length; i++) {
+                        alert(messages[i]);
+                    }
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        <div class=top-bar">
+            <form class="login-form" method="post" action="/login">
+                <div class="form-container">
+                    <label for="em"><b>E-mail</b></label>
+                    <input id="em" name="email" placeholder="" type="text" class="email-control" required autofocus> <br>
+
+                    <div class="password-wrapper">
+                        <label for="new-pass"><b>Contraseña</b></label>
+                        <input type="password" id="new-pass" name="new-pass" class="form-control" required/>
+                         <div class="eye-button">
+                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="eye-icon">
+                                 <path d="M3.53 2.47a.75.75 0 00-1.06 1.06l18 18a.75.75 0 101.06-1.06l-18-18zM22.676 12.553a11.249 11.249 0 01-2.631 4.31l-3.099-3.099a5.25 5.25 0 00-6.71-6.71L7.759 4.577a11.217 11.217 0 014.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113z" />
+                                 <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0115.75 12zM12.53 15.713l-4.243-4.244a3.75 3.75 0 004.243 4.243z" />
+                                 <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 00-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 0 016.75 12z" />
+                             </svg>
+                         </div>
+                    </div>
+                    <button type="submit" class="action-button">Login</button>
+                </div>
+            </form>
+        </div>
+    </main>
+     <footer>
+         <div class="credits">
+             <p class="developers">
+                 <a href="mailto:alberto.fernandez.isabel@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Alberto Fernández Isabel</br>
+                 <a href="mailto:isaac.martin@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Isaac Martín de Diego </br>
+             </p>
+         </div>
+    </footer>
+</body>
+</html>

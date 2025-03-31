@@ -1,0 +1,59 @@
+CURSO 1;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Álgebra Lineal;FBR;6
+1;Cálculo;FBR;6
+1;Fundamentos de Ciencia e Ingeniería de Datos;FBC;6
+1;Fundamentos de Programación;FBC;6
+1;Fundamentos Físicos de los Computadores;FBR;6
+2;Estructura de Computadores;OB;3
+2;Herramientas Matemáticas para la Ciencia de Datos I;OB;3
+2;Probabilidad y Simulación;FBR;6
+2;Emprendimiento;FBR;6
+2;Aspectos Legales y Éticos;FBC;6
+2;Herramientas Matemáticas para la Ciencia de Datos II;OB;6
+;;;
+CURSO 2;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Inferencia Estadística;FBR;6
+1;Estructuras de Datos y Programación Orientada a Objetos;OB;6
+1;Señales y Sistemas;OB;6
+1;Arquitectura de Computadores;OB;6
+1;Optimización I;OB;3
+2;Redes de Computadores;OB;6
+2;Sistemas Operativos y Virtualización;OB;6
+2;Aprendizaje Automático I;OB;6
+2;Modelos de Regresión;OB;6
+2;Optimización II;OB;3
+Anual;Idioma Moderno;FBC;6
+;;;
+CURSO 3;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Fundamentos Matemáticos de la Información;OB;6
+1;Sistemas Distribuidos de Procesamiento de Datos I;OB;6
+1;Aprendizaje Automático II;OB;6
+1;Diseño y Análisis de Algoritmos;OB;6
+1;Bases de Datos;OB;6
+2;Seguridad y Privacidad de Datos;OB;6
+2;Métodos Bayesianos;OB;6
+2;Análisis de Series Temporales;OB;6
+2;Sistemas Distribuidos de Procesamiento de Datos II;OB;6
+2;Arquitecturas de Altas Prestaciones y Computación en la Nube;OB;6
+;;;
+CURSO 4;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Bases de Datos No Relacionales;OB;6
+1;Visualización de Información;OB;4,5
+1;Procesamiento de Datos en Dominios Irregulares;OB;4,5
+2;Optativa 1;OP;4,5
+2;Optativa 2;OP;4,5
+1;Reconocimiento Académico de Créditos;OB;6
+Anual;Trabajo Fin de Grado;OB;15
+Anual;Prácticas Externas;OB;15
+  ;;;
+OPTATIVAS;;;
+Semestre;Asignatura;Carácter;Créditos
+2;Procesamiento de Lenguaje Natural y Minería de Texto;OP;4,5
+2;Aplicaciones Multidisciplinares I;OP;4,5
+2;Análisis de Datos Multimedia;OP;4,5
+2;Aplicaciones Multidisciplinares II;OP;4,5
+;;;

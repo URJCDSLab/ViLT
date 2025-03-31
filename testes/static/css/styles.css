@@ -1,0 +1,378 @@
+
+header {
+    background-color: #bdd0f6;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+input:hover {
+    background-color: #ED1C24;
+}
+
+input {
+    border-color: #1489BA;
+}
+
+tr:nth-child(even) {
+    background-color: #bdd0f6;
+}
+
+tr:hover {
+    background-color: #ED1C24;
+}
+
+th {
+    background-color: #bdd0f6;
+}
+
+tr {
+    border-bottom: 10px solid #1489BA;
+}
+
+table, th, td {
+    border: 1px solid #1489BA;
+    padding: 3px;
+}
+
+table {
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    border: 2px solid #1489BA;
+    scroll-behavior: auto;
+    scrollbar-color: white #1489BA;
+}
+
+main {
+    background-color: azure;
+    border-radius: 8px;
+}
+
+body {
+    background-color: #1489BA;
+}
+
+footer {
+    background-color: #ED1C24;
+    border-radius: 8px;
+}
+
+.iconic {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.text {
+    width: 60%;
+    text-align: justify;
+    margin-left: 10px;
+    padding:10px;
+}
+
+.text-table {
+    width: 100%;
+    text-align: left;
+    padding:10px;
+    display: flex;
+    justify-content: center;
+}
+
+.text-title {
+    color: #1489BA;
+    text-align: justify;
+}
+
+.image_header_vilt {
+    margin-left: 10px;
+    display:flex
+}
+
+.image_header_dslab {
+    margin-right: 10px;
+    margin-left: auto;
+    display:flex
+}
+
+.credits {
+    display: flex;
+    justify-content: center;
+}
+
+.developers {
+    color: white;
+    font-weight: bold;
+    text-align: left;
+}
+.developers a {
+    color: white;
+    font-weight: bold;
+    text-align: left;
+}
+
+.responsive {
+        max-width: 100%;
+        height: auto;
+}
+
+.top-bar {
+    box-shadow: 0.1em 0.1em 0.1em;
+    position: absolute;
+    text-align: right;
+    width: 20%;
+    margin-right: 100px;
+}
+
+.chatbox {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 50px;
+
+}
+
+.login-form {
+    width: 20%;
+    border-radius: 8px;
+    border:2px solid #1489BA;
+    padding: 20px;
+    top: 15em;
+    right: 1em;
+    position: absolute;
+    text-align: right;
+    z-index: 2;
+}
+
+.admin-form {
+    border-radius: 8px;
+    border:2px solid #1489BA;
+    padding: 5px;
+    width: 20%;
+    position:absolute;
+    top: 12em;
+    right: 10em;
+    text-align: left;
+}
+
+.admin-form-upload {
+    border-radius: 8px;
+    border:2px solid #1489BA;
+    padding: 7px;
+    width: 25%;
+    position:absolute;
+    top: 13em;
+    right: 10em;
+    text-align: left;
+}
+
+.admin-form-modify {
+    border-radius: 8px;
+    border:2px solid #1489BA;
+    padding: 5px;
+    width: 25%;
+    position:absolute;
+    top: 13em;
+    right: 10em;
+    text-align: left;
+}
+
+.admin-form-2 {
+    border-radius: 8px;
+    border:2px solid #1489BA;
+    padding: 10px;
+    width: 15%;
+    position:absolute;
+    top: 15em;
+    right: 28em;
+    text-align: left;
+}
+
+.admin-form-start {
+    border-radius: 8px;
+    border:2px solid #1489BA;
+    width: 50%;
+    margin: auto;
+    text-align: left;
+}
+
+.datalist-options {
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: left;
+    max-width: 200px;
+}
+
+.datalist-options::-webkit-scrollbar{
+  width: 20px;
+}
+
+.datalist-options::-webkit-scrollbar-thumb{
+  background-color: #1489BA;
+}
+
+.datalist-options::-webkit-scrollbar-track{
+    background-color: #bdd0f6;
+}
+
+.title-form {
+    font-weight: bold;
+}
+
+li::marker {
+    color: #ED1C24;
+}
+
+.action-button {
+    color: white;
+    border-color: #1489BA;
+    background-color:#1489BA;
+    font-weight: bold;
+    margin-top: 5px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.action-button-2 {
+    color: white;
+    border-color: #1489BA;
+    background-color:#1489BA;
+    font-weight: bold;
+    margin-top: 5px;
+    border-radius: 8px;
+    text-align: center;
+    margin-left: 533px;
+    float:left
+}
+
+.eye-button {
+    border-color: transparent;
+    color:#1489BA;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.eye-icon {
+  width: 17px;
+  height: 17px;
+}
+
+.div-close {
+    float:right;
+    padding-right: 10px;
+    padding-top: 1px;
+}
+
+.button-close {
+    background-color: transparent;
+    color: #1489BA;
+    border-color: #1489BA;
+    font-weight: bold;
+    margin-top: 5px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.div-back {
+    float:right;
+    padding-right: 5px;
+}
+
+.progressbar__radio {
+  display: none;
+}
+
+.progressbar__radio:checked + label ~ label {
+  color: #bdd0f6;
+}
+
+.progressbar__radio:checked + label ~ label::before {
+    background: white;
+    border-color: #1489BA;
+}
+
+.progressbar__radio:checked + label ~ label::after {
+    background: #bdd0f6;
+}
+
+.progressbar__label {
+    display: table-cell;
+    font-weight: bold;
+}
+
+.progressbar__label::before {
+    background: #1489BA;
+    border-radius: 50%;
+    border: 2px solid #1489BA;
+    content: "";
+    display: block;
+    height: 10px;
+    width: 10px;
+    margin-right: 1px;
+}
+
+.progressbar__label::after {
+    content: "";
+}
+
+.div-progress {
+    padding-bottom: 10px;
+}
+
+.iconic-feedback {
+    background-color: transparent;
+    border-color: transparent;
+    width:5%;
+    height:5%;
+    float:right;
+    margin-bottom: 10px;
+    margin-top: -163px;
+}
+
+.human {
+     color: #1e8b00;
+     width: 90%;
+     float: left;
+     font-weight: bold;
+     font-size: small;
+ }
+
+ .robot {
+     color: #1489BA;
+     width: 90%;
+     float: right;
+     font-weight: bold;
+     font-size: small;
+ }
+
+ .output-container {
+     height: calc(100vh - 250px);
+     overflow-y: auto;
+     border: 2px solid #1489BA;
+     padding: 8px;
+     background-color: white;
+     border-radius: 8px;
+     scroll-behavior: auto;
+     scrollbar-color: white #1489BA;
+ }
+
+ .input-container {
+     margin-top: 20px;
+     background-color: azure;
+     border: transparent;
+     border-radius: 8px;
+ }
+
+ .form-control {
+     background-color: white;
+     resize: none;
+     border: 2px solid #1489BA;
+     scroll-behavior: auto;
+     scrollbar-color: white #1489BA;
+     font-size: small;
+ }
+
+ .container-fluid {
+     padding: 0;
+     background-color: azure;
+     border: 2px solid #1489BA;
+     border-radius: 8px;
+ }

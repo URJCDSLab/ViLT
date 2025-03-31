@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vilt.usermanager &mdash; Virtual Learning Tutor (ViLT) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Virtual Learning Tutor (ViLT)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Virtual Learning Tutor (ViLT)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vilt.usermanager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vilt.usermanager</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">vilt.infomanager</span><span class="w"> </span><span class="kn">import</span> <span class="n">InfoSubject</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">update_subject_keywords</span><span class="p">,</span> <span class="n">update_subject_parameters</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">vilt.keywordsmanager</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeywordsManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">vilt.databasemanager</span><span class="w"> </span><span class="kn">import</span> <span class="n">DBManager</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jsonpickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+
+<div class="viewcode-block" id="to_json">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.to_json">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="n">serializable_obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a serializable object into a JSON-formatted string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    serializable_obj : object</span>
+<span class="sd">        The object to be serialized.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    json_result : dict</span>
+<span class="sd">        The JSON-encoded representation of the object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">jsonpickle</span><span class="o">.</span><span class="n">set_preferred_backend</span><span class="p">(</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+    <span class="n">jsonpickle</span><span class="o">.</span><span class="n">set_encoder_options</span><span class="p">(</span><span class="s1">&#39;json&#39;</span><span class="p">,</span> <span class="n">encodings</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="n">json_result</span> <span class="o">=</span> <span class="n">jsonpickle</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">serializable_obj</span><span class="p">,</span> <span class="n">unpicklable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_result</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="UserManager">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UserManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages user operations in the database, such as adding, deleting, and modifying users.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the UserManager by setting up the database connection and user history manager.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_users</span> <span class="o">=</span> <span class="s2">&quot;chatbot_users&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleaning_chatbot</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span> <span class="o">=</span> <span class="n">DBManager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="n">HistoryUserManager</span><span class="p">()</span>
+
+<div class="viewcode-block" id="UserManager.add_user">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.add_user">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new user to the database.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        user : dict</span>
+<span class="sd">            The user data in dictionary format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">connect_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">insert_into_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">disconnect_database</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="UserManager.delete_user">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.delete_user">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">add_history</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a user from the database.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            Email of the user to delete.</span>
+<span class="sd">        add_history : bool, optional</span>
+<span class="sd">            If True, stores the deleted user in the history database (default is True).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">add_history</span><span class="p">:</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">users</span><span class="p">:</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;admin&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">add_history_user</span><span class="p">(</span><span class="n">to_json</span><span class="p">(</span><span class="n">user</span><span class="p">))</span>
+
+        <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">connect_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">delete_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">,</span> <span class="n">condition</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">disconnect_database</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="UserManager.query_user">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.query_user">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">query_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves a user from the database based on email and password.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email of the user to query.</span>
+<span class="sd">        password : str</span>
+<span class="sd">            The password of the user (will be hashed before querying).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        users : list</span>
+<span class="sd">            A list of users that match the provided email and password.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">password</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="s1">&#39;$and&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">}]})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">connect_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">)</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">query_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">,</span> <span class="n">condition</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">disconnect_database</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">users</span></div>
+
+
+<div class="viewcode-block" id="UserManager.query_users_by_role">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.query_users_by_role">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">query_users_by_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves all users from the database with a specific role.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        role : str</span>
+<span class="sd">            The role of the users to retrieve (e.g., &#39;admin&#39;, &#39;student&#39;, &#39;teacher&#39;).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        users : list</span>
+<span class="sd">            A list of users that match the specified role.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">role</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">connect_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">)</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">query_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">,</span> <span class="n">condition</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">disconnect_database</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">users</span></div>
+
+
+<div class="viewcode-block" id="UserManager.query_users_by_email">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.query_users_by_email">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">query_users_by_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves users associated with a given email.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email of the users to search for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        users : list</span>
+<span class="sd">            A list of users matching the email.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">connect_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">)</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">query_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_users</span><span class="p">,</span> <span class="n">condition</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">disconnect_database</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">users</span></div>
+
+
+<div class="viewcode-block" id="UserManager.get_users_by_subject">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.get_users_by_subject">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_users_by_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;student&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function to gather the users of a specific subject.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The desired career to filter.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The desired subject to filter.</span>
+<span class="sd">        role : str</span>
+<span class="sd">            The role of the users to gather.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            enrolled: list</span>
+<span class="sd">            The list of users with the indicated career, subject, and role.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">students</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_role</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+        <span class="n">enrolled</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">students</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_user_subject</span><span class="p">(</span><span class="n">student</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">enrolled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">enrolled</span></div>
+
+
+<div class="viewcode-block" id="UserManager.add_subject">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.add_subject">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method to assign a subject to a user (usually a teacher or a student).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email address of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The desired career to filter.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The desired subject to filter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_json</span><span class="p">(</span><span class="n">InfoSubject</span><span class="p">(</span><span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserManager.remove_subject">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.remove_subject">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method to retire a subject to a user (usually a teacher or a student).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email address of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The desired career to filter.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The desired subject to filter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_user_subject</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">position</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserManager.start_conversation">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.start_conversation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_conversation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;</span>
+<span class="sd">        A method to start a conversation with the chatbot for the specific user identified by the email address.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email address of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The desired career to filter.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The desired subject to filter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_user_subject</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">conversation</span> <span class="o">=</span> <span class="n">Conversation</span><span class="p">()</span>
+                <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">position</span><span class="p">][</span><span class="s1">&#39;info_values&#39;</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_json</span><span class="p">(</span><span class="n">conversation</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserManager.has_user_subject">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.has_user_subject">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_user_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function to validate if a user has a specific subject assigned.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email address of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The desired career to filter.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The desired subject to filter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        position: int</span>
+<span class="sd">            The position of the subject in the list of assigned subjects of the user. Note that if it is equal -1 then the subject is not assigned to that user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">]))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="n">info_subject</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">info_subject</span><span class="p">[</span><span class="s1">&#39;career&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">selected_career</span> <span class="ow">and</span> <span class="n">info_subject</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">selected_subject</span><span class="p">:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">position</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">position</span></div>
+
+
+<div class="viewcode-block" id="UserManager.has_active_conversation">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.has_active_conversation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_active_conversation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function to know if the user has a similar conversation still active.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email address of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The desired career to filter.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The desired subject to filter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            active: Boolean</span>
+<span class="sd">                The flag to indicate if the conversation is still active.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">active</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_user_subject</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">position</span><span class="p">][</span><span class="s1">&#39;info_values&#39;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">conversation</span> <span class="ow">in</span> <span class="n">current</span><span class="p">[</span><span class="s1">&#39;conversations&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;is_active&#39;</span><span class="p">]:</span>
+                        <span class="n">active</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">break</span>
+        <span class="k">return</span> <span class="n">active</span></div>
+
+
+<div class="viewcode-block" id="UserManager.find_conversation">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.find_conversation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_conversation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function to gather conversations from a subject by the user with the specific email address.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">        The email address of the user.</span>
+<span class="sd">        position : int</span>
+<span class="sd">            The position of the conversation in the list of assigned subjects of the user.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            sub_position : int</span>
+<span class="sd">                The position of the conversation in the list of conversations related to the assigned subjects of the user. Note that if it is equal -1 then there is no conversation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+        <span class="n">sub_position</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">position</span><span class="p">][</span><span class="s1">&#39;info_values&#39;</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">]))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">position</span><span class="p">][</span><span class="s1">&#39;info_values&#39;</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;is_active&#39;</span><span class="p">]:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">sub_position</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">sub_position</span></div>
+
+
+<div class="viewcode-block" id="UserManager.find_active_conversation_from_subject">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.find_active_conversation_from_subject">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_active_conversation_from_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function to find possible active conversations related to a specific subject.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email address of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The desired career to filter.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The desired subject to filter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        position: int</span>
+<span class="sd">            The position of the subject in the list of assigned subjects of the user. Note that if it is equal -1 then there is no related subject.</span>
+<span class="sd">        conv_position : int</span>
+<span class="sd">            The position of the conversation in the list of conversations related to the subject. Note that if it is equal -1 then there is no conversation related to the assigned subject.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_user_subject</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">)</span>
+        <span class="n">conv_position</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">position</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_active_conversation</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+                <span class="n">conv_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_conversation</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">position</span><span class="p">,</span> <span class="n">conv_position</span></div>
+
+
+<div class="viewcode-block" id="UserManager.end_conversation">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.end_conversation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">end_conversation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method to finish a conversation with the chatbot for the specific user identified by the email address.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email address of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The desired career to filter.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The desired subject to filter.</span>
+<span class="sd">        text : str</span>
+<span class="sd">            The finished conversation between the user and the chatbot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">keyword_manager</span> <span class="o">=</span> <span class="n">KeywordsManager</span><span class="p">()</span>
+            <span class="n">position</span><span class="p">,</span> <span class="n">conv_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_active_conversation_from_subject</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span>
+                                                                                 <span class="n">selected_subject</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">position</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">conv_position</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">conversation</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">position</span><span class="p">][</span><span class="s1">&#39;info_values&#39;</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">][</span><span class="n">conv_position</span><span class="p">]</span>
+                <span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span>
+                <span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+                <span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;keywords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">keyword_manager</span><span class="o">.</span><span class="n">generate_keywords</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;is_active&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">candidate_subject</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">position</span><span class="p">][</span><span class="s1">&#39;info_values&#39;</span><span class="p">]</span>
+                <span class="n">candidate_subject</span><span class="p">[</span><span class="s1">&#39;global_keywords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_subject_keywords</span><span class="p">(</span><span class="n">candidate_subject</span><span class="p">)</span>
+                <span class="n">total_time</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span> <span class="n">min_time</span><span class="p">,</span> <span class="n">times</span> <span class="o">=</span> <span class="n">update_subject_parameters</span><span class="p">(</span><span class="n">candidate_subject</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">total_time</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span> <span class="n">min_time</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+                <span class="n">candidate_subject</span><span class="p">[</span><span class="s1">&#39;total_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_time</span>
+                <span class="n">candidate_subject</span><span class="p">[</span><span class="s1">&#39;max_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_time</span>
+                <span class="n">candidate_subject</span><span class="p">[</span><span class="s1">&#39;min_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_time</span>
+                <span class="n">candidate_subject</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">times</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserManager.update_feedback">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.UserManager.update_feedback">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">conv_position</span><span class="p">,</span> <span class="n">utility_feedback</span><span class="p">,</span> <span class="n">learning_feedback</span><span class="p">,</span> <span class="n">precision_feedback</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method to include the opinion of the users about the performance of the chatbot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email address of the user.</span>
+<span class="sd">        position : int</span>
+<span class="sd">            The position of the subject in the list of assigned subjects of the user.</span>
+<span class="sd">        conv_position : int</span>
+<span class="sd">            The position of the conversation in the list of conversations related to the selected subjects of the user.</span>
+<span class="sd">        utility_feedback : str</span>
+<span class="sd">            The value of the utility feedback provided by the user.</span>
+<span class="sd">        learning_feedback : str</span>
+<span class="sd">            The value of the learning feedback provided by the user.</span>
+<span class="sd">        precision_feedback : str</span>
+<span class="sd">            The value of the precision feedback provided by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;utility_feedback&#39;</span><span class="p">:</span> <span class="n">utility_feedback</span><span class="p">,</span> <span class="s1">&#39;learning_feedback&#39;</span><span class="p">:</span> <span class="n">learning_feedback</span><span class="p">,</span>
+                      <span class="s1">&#39;precision_feedback&#39;</span><span class="p">:</span> <span class="n">precision_feedback</span><span class="p">}</span>
+            <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">position</span><span class="p">][</span><span class="s1">&#39;info_values&#39;</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">][</span><span class="n">conv_position</span><span class="p">][</span><span class="s1">&#39;feedback&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="User">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.User">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">User</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a system user with attributes like name, email, role, and password.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">surname</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s2">&quot;teacher&quot;</span><span class="p">,</span> <span class="n">digest</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a user instance with given attributes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            User&#39;s first name.</span>
+<span class="sd">        surname : str</span>
+<span class="sd">            User&#39;s last name.</span>
+<span class="sd">        email : str</span>
+<span class="sd">            User&#39;s email address.</span>
+<span class="sd">        password : str</span>
+<span class="sd">            User&#39;s password (hashed if digest is True).</span>
+<span class="sd">        role : str, optional</span>
+<span class="sd">            User&#39;s role (default is &quot;teacher&quot;).</span>
+<span class="sd">        digest : bool, optional</span>
+<span class="sd">            Whether to hash the password before storing (default is True).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surname</span> <span class="o">=</span> <span class="n">surname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">role</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">password</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="k">if</span> <span class="n">digest</span> <span class="k">else</span> <span class="n">password</span></div>
+
+
+
+<div class="viewcode-block" id="HistoryUserManager">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.HistoryUserManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HistoryUserManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages historical user data, allowing retrieval and deletion of past users.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the HistoryUserManager with the database connection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_historic_users</span> <span class="o">=</span> <span class="s2">&quot;chatbot_historic_users&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span> <span class="o">=</span> <span class="n">DBManager</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HistoryUserManager.add_history_user">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.HistoryUserManager.add_history_user">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_history_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a deleted user to the history database.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        user : dict</span>
+<span class="sd">            The user data to be stored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">connect_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_historic_users</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">insert_into_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_historic_users</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">disconnect_database</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HistoryUserManager.delete_history_user">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.HistoryUserManager.delete_history_user">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_history_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes a specific historic user based on email and date.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email of the user to delete.</span>
+<span class="sd">        date : str</span>
+<span class="sd">            The date when the user was stored in history.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">connect_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_historic_users</span><span class="p">)</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">}]}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">delete_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_historic_users</span><span class="p">,</span> <span class="n">condition</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">disconnect_database</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HistoryUserManager.delete_history_users">
+<a class="viewcode-back" href="../../vilt.html#vilt.usermanager.HistoryUserManager.delete_history_users">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_history_users</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes all users from the history database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">connect_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_historic_users</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">delete_collection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_historic_users</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbmanager</span><span class="o">.</span><span class="n">disconnect_database</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alberto Fernández Isabel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

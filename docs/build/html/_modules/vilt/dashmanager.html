@@ -1,0 +1,1269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vilt.dashmanager &mdash; Virtual Learning Tutor (ViLT) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Virtual Learning Tutor (ViLT)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Virtual Learning Tutor (ViLT)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vilt.dashmanager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vilt.dashmanager</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">vilt.infomanager</span><span class="w"> </span><span class="kn">import</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">GlobalInfoSubject</span><span class="p">,</span> <span class="n">InfoValues</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dash_holoniq_wordcloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">DashWordcloud</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">vilt.usermanager</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserManager</span><span class="p">,</span> <span class="n">to_json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span><span class="p">,</span> <span class="n">html</span>
+
+
+<div class="viewcode-block" id="create_layout">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.create_layout">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_layout</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates the main dashboard layout with various filters, graphs, and indicators.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    email : str, optional</span>
+<span class="sd">        The user&#39;s email address (default is an empty string).</span>
+<span class="sd">    subject : str, optional</span>
+<span class="sd">        The selected subject to filter the dashboard (default is &#39;--&#39;).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    layout : dash.html.Div</span>
+<span class="sd">        The structured layout for the dashboard.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+        <span class="n">html</span><span class="o">.</span><span class="n">Header</span><span class="p">([</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Form</span><span class="p">([</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;email_hidden&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;email_hidden&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;hidden&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">email</span><span class="p">),</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+                        <span class="n">html</span><span class="o">.</span><span class="n">Img</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;../static/img/vilt.png&#39;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="s1">&#39;Vilt Logo&#39;</span><span class="p">,</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;responsive&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;150&#39;</span><span class="p">,</span>
+                                 <span class="n">height</span><span class="o">=</span><span class="s1">&#39;150&#39;</span><span class="p">),</span>
+                        <span class="n">className</span><span class="o">=</span><span class="s1">&#39;iconic&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;submit&#39;</span>
+                    <span class="p">)</span>
+                <span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;/reset-page&#39;</span><span class="p">),</span>
+            <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;image_header_vilt&#39;</span><span class="p">),</span>
+
+            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Img</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;../static/img/dslab_logo.png&#39;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="s1">&#39;DSLab Logo&#39;</span><span class="p">,</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;responsive&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;450&#39;</span><span class="p">,</span>
+                         <span class="n">height</span><span class="o">=</span><span class="s1">&#39;150&#39;</span><span class="p">)</span>
+            <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;image_header_dslab&#39;</span><span class="p">),</span>
+        <span class="p">]),</span>
+
+        <span class="n">html</span><span class="o">.</span><span class="n">Main</span><span class="p">([</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s1">&#39;Información gráfica sobre sus asignaturas&#39;</span><span class="p">,</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;text-title&#39;</span><span class="p">,</span>
+                        <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Span</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Br</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line-height&quot;</span><span class="p">:</span> <span class="s2">&quot;10px&quot;</span><span class="p">})]),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Seleccione la asignatura para filtrar:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;font-weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                                                                                <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span>
+                        <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;subject-dropdown&#39;</span><span class="p">,</span>
+                        <span class="n">options</span><span class="o">=</span><span class="n">get_subject_options</span><span class="p">(</span><span class="n">email</span><span class="p">),</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
+                        <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;80%&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;10px&#39;</span><span class="p">,</span> <span class="s1">&#39;border-radius&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">}</span>
+                    <span class="p">)</span>
+                <span class="p">],</span>  <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;2px solid #1489BA&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+                                                        <span class="s1">&#39;border-radius&#39;</span><span class="p">:</span> <span class="s1">&#39;8px&#39;</span><span class="p">,</span> <span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Span</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Br</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line-height&quot;</span><span class="p">:</span> <span class="s2">&quot;10px&quot;</span><span class="p">})]),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Indicadores sobre las conversaciones de los estudiantes&#39;</span><span class="p">,</span>
+                               <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;font-weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">})</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;mean-time-indicator&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="s1">&#39;100px&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;conversations-indicator&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="s1">&#39;100px&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span>
+                                                                   <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;-100px&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;mean-conversations-indicator&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="s1">&#39;100px&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span>
+                                                                            <span class="s1">&#39;-100px&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;40%&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;mean-size-conversations-indicator&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="s1">&#39;100px&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span>
+                                                                             <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;-100px&#39;</span><span class="p">,</span>
+                                                                             <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;60%&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;students-conversations-indicator&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="s1">&#39;100px&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span>
+                                                                            <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span>
+                                                                            <span class="s1">&#39;-100px&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;80%&#39;</span><span class="p">})</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;2px solid #1489BA&#39;</span><span class="p">,</span> <span class="s1">&#39;border-radius&#39;</span><span class="p">:</span> <span class="s1">&#39;8px&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                          <span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Indicadores sobre la opinión de los estudiantes&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;font-weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                                                                                            <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">})</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;precision-feedback-indicator&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span>
+                                                                        <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;utility-feedback-indicator&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span>
+                                                                      <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;-250px&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;learning-feedback-indicator&#39;</span><span class="p">,</span>
+                              <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;-250px&#39;</span><span class="p">,</span>
+                                     <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;40%&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;mean-feedback-indicator&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span>
+                                                                   <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;-250px&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;60%&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;students-feedback-indicator&#39;</span><span class="p">,</span>
+                              <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;20%&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;-250px&#39;</span><span class="p">,</span>
+                                     <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;80%&#39;</span><span class="p">})</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;2px solid #1489BA&#39;</span><span class="p">,</span> <span class="s1">&#39;border-radius&#39;</span><span class="p">:</span> <span class="s1">&#39;8px&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+                          <span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Span</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Br</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line-height&quot;</span><span class="p">:</span> <span class="s2">&quot;10px&quot;</span><span class="p">})]),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Seleccione un estudiante para filtrar:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;font-weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                                                                                <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span>
+                        <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;student-dropdown&#39;</span><span class="p">,</span>
+                        <span class="n">multi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;--&#39;</span><span class="p">],</span>
+                        <span class="n">value</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                        <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;80%&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;10px&#39;</span><span class="p">,</span> <span class="s1">&#39;border-radius&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">}</span>
+                    <span class="p">)</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;2px solid #1489BA&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span> <span class="s1">&#39;border-radius&#39;</span><span class="p">:</span> <span class="s1">&#39;8px&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+
+                <span class="n">html</span><span class="o">.</span><span class="n">Span</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Br</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line-height&quot;</span><span class="p">:</span> <span class="s2">&quot;10px&quot;</span><span class="p">})]),</span>
+
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Accesos de los estudiantes a la aplicación&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;font-weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                                                                                      <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">})</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;total-time-plot&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;48%&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;1%&#39;</span><span class="p">,</span>
+                                                           <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;1%&#39;</span><span class="p">}),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;conversations-plot&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;48%&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;-400px&#39;</span><span class="p">,</span>
+                                                              <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;51%&#39;</span><span class="p">})</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;2px solid #1489BA&#39;</span><span class="p">,</span> <span class="s1">&#39;border-radius&#39;</span><span class="p">:</span> <span class="s1">&#39;8px&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">430</span><span class="p">,</span>
+                          <span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Span</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Br</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line-height&quot;</span><span class="p">:</span> <span class="s2">&quot;10px&quot;</span><span class="p">})]),</span>
+
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Desglose de opinión y palabras de interés&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;font-weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                                                                                    <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">})</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                        <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;radar-plot&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">350</span><span class="p">,</span> <span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;20px&#39;</span><span class="p">})</span>
+                    <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;48%&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">350</span><span class="p">,</span> <span class="s1">&#39;textAlign&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;10px&#39;</span><span class="p">}),</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                        <span class="n">DashWordcloud</span><span class="p">(</span>
+                            <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;wordcloud&#39;</span><span class="p">,</span>
+                            <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
+                            <span class="n">width</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span>
+                            <span class="n">gridSize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                            <span class="n">weightFactor</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                            <span class="n">minSize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                            <span class="n">fontWeight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;random-dark&#39;</span><span class="p">,</span>
+                            <span class="n">backgroundColor</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span>
+                            <span class="n">drawOutOfBound</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                            <span class="n">rotateRatio</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                            <span class="n">shrinkToFit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                            <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span>
+                        <span class="p">)</span>
+                    <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;margin-top&#39;</span><span class="p">:</span> <span class="s1">&#39;-350px&#39;</span><span class="p">,</span> <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;55%&#39;</span><span class="p">,</span> <span class="s1">&#39;textAlign&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">})</span>
+                <span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;2px solid #1489BA&#39;</span><span class="p">,</span> <span class="s1">&#39;border-radius&#39;</span><span class="p">:</span> <span class="s1">&#39;8px&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">390</span><span class="p">,</span>
+                          <span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="s1">&#39;10px 10px 10px 10px&#39;</span><span class="p">}),</span>
+
+                <span class="n">html</span><span class="o">.</span><span class="n">Span</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Br</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line-height&quot;</span><span class="p">:</span> <span class="s2">&quot;10px&quot;</span><span class="p">})]),</span>
+            <span class="p">]),</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Form</span><span class="p">([</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;email_hidden&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;hidden&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">email</span><span class="p">),</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">Img</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;../static/img/back.png&quot;</span><span class="p">,</span> <span class="n">className</span><span class="o">=</span><span class="s2">&quot;responsive&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">),</span>
+                                <span class="n">className</span><span class="o">=</span><span class="s2">&quot;iconic&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="p">)</span>
+                <span class="p">],</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;/reset-page&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">)</span>
+            <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s2">&quot;div-back&quot;</span><span class="p">)</span>
+        <span class="p">]),</span>
+        <span class="n">html</span><span class="o">.</span><span class="n">Footer</span><span class="p">([</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">P</span><span class="p">([</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">Img</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;../static/img/sobre.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
+                           <span class="n">href</span><span class="o">=</span><span class="s1">&#39;mailto:alberto.fernandez.isabel@urjc.es&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39; Alberto Fernández Isabel&#39;</span><span class="p">,</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Br</span><span class="p">(),</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">Img</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s1">&#39;../static/img/sobre.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
+                           <span class="n">href</span><span class="o">=</span><span class="s1">&#39;mailto:isaac.martin@urjc.es&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39; Isaac Martín de Diego&#39;</span>
+                <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;developers&#39;</span><span class="p">)</span>
+            <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;credits&#39;</span>
+            <span class="p">)</span>
+        <span class="p">])</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">layout</span></div>
+
+
+
+<div class="viewcode-block" id="get_student_selection">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_student_selection">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_student_selection</span><span class="p">(</span><span class="n">selected_students</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensures the student selection includes &#39;--&#39; as an option.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    selected_students : list or str</span>
+<span class="sd">        The currently selected students.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    selected_students : list</span>
+<span class="sd">        The modified selection with &#39;--&#39; included.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">selected_students</span> <span class="o">==</span> <span class="s1">&#39;--&#39;</span><span class="p">:</span>
+        <span class="n">selected_students</span> <span class="o">=</span> <span class="p">[</span><span class="n">selected_students</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;--&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_students</span><span class="p">:</span>
+        <span class="n">selected_students</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">selected_students</span></div>
+
+
+
+<div class="viewcode-block" id="get_students_options">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_students_options">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_students_options</span><span class="p">(</span><span class="n">selected_career</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selected_subject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves a list of student emails for a given career and subject.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    selected_career : str, optional</span>
+<span class="sd">        The career to filter students.</span>
+<span class="sd">    selected_subject : str, optional</span>
+<span class="sd">        The subject to filter students.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    students_in_career : list</span>
+<span class="sd">        A list of student emails, including &#39;--&#39; as a default option.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_manager</span> <span class="o">=</span> <span class="n">UserManager</span><span class="p">()</span>
+    <span class="n">students</span> <span class="o">=</span> <span class="n">user_manager</span><span class="o">.</span><span class="n">query_users_by_role</span><span class="p">(</span><span class="s1">&#39;student&#39;</span><span class="p">)</span>
+    <span class="n">students_in_career</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;--&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">selected_career</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">selected_subject</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">students</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">student</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;career&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">selected_career</span> <span class="ow">and</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">selected_subject</span><span class="p">:</span>
+                    <span class="n">students_in_career</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">student</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">students_in_career</span></div>
+
+
+
+<div class="viewcode-block" id="get_subject_options">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_subject_options">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_subject_options</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves a list of subjects assigned to a specific user.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    email : str</span>
+<span class="sd">        The user&#39;s email address.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    subject_options : list</span>
+<span class="sd">        A list of subjects formatted as &#39;(career) subject&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_manager</span> <span class="o">=</span> <span class="n">UserManager</span><span class="p">()</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">user_manager</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+    <span class="n">subject_options</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;--&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">])):</span>
+            <span class="n">subj</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">subject_options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;career&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;) &#39;</span> <span class="o">+</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">subject_options</span></div>
+
+
+
+<div class="viewcode-block" id="find_keyword">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.find_keyword">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_keyword</span><span class="p">(</span><span class="n">keyword</span><span class="p">,</span> <span class="n">keywords_by_student</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the index of a keyword in a list of keyword-frequency pairs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    keyword : str</span>
+<span class="sd">        The keyword to search for.</span>
+<span class="sd">    keywords_by_student : list</span>
+<span class="sd">        A list of keyword-frequency pairs.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pos : int</span>
+<span class="sd">        The index of the keyword, or -1 if not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">keywords_by_student</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="n">keywords_by_student</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">pos</span></div>
+
+
+
+<div class="viewcode-block" id="create_conversations_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.create_conversations_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_conversations_indicator</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a Plotly indicator graph for conversations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value : int or float</span>
+<span class="sd">        The numerical value to display in the indicator.</span>
+<span class="sd">    text : str</span>
+<span class="sd">        The title of the indicator.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    go.Figure</span>
+<span class="sd">        A Plotly figure representing the indicator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conversations_indicator</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Indicator</span><span class="p">(</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">domain</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span>
+            <span class="n">number</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">}}</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">conversations_indicator</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;&lt;b&gt;&#39;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;&lt;/b&gt;&#39;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,0,0,0)&quot;</span><span class="p">,</span>
+        <span class="n">template</span><span class="o">=</span><span class="s1">&#39;seaborn&#39;</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">100</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">conversations_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="create_feedback_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.create_feedback_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_feedback_indicator</span><span class="p">(</span><span class="n">radio_value_trace</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a Plotly gauge indicator for feedback metrics.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    radio_value_trace : float</span>
+<span class="sd">        The value to be displayed in the gauge.</span>
+<span class="sd">    text : str</span>
+<span class="sd">        The title of the indicator.</span>
+<span class="sd">    max_value : int, optional</span>
+<span class="sd">        The maximum value of the gauge (default is 10).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    go.Figure</span>
+<span class="sd">        A Plotly figure representing the gauge indicator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indicator</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Indicator</span><span class="p">(</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;gauge+number+delta&quot;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">radio_value_trace</span><span class="p">,</span>
+            <span class="n">domain</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span>
+            <span class="n">delta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;reference&#39;</span><span class="p">:</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">max_value</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;increasing&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s2">&quot;RebeccaPurple&quot;</span><span class="p">}},</span>
+            <span class="n">gauge</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;axis&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_value</span><span class="p">],</span> <span class="s1">&#39;tickwidth&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;tickcolor&#39;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">},</span>
+                <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">},</span>
+                <span class="s1">&#39;bgcolor&#39;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;borderwidth&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s1">&#39;bordercolor&#39;</span><span class="p">:</span> <span class="s2">&quot;#1489BA&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;steps&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span><span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">max_value</span> <span class="o">/</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#ec0000&#39;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span> <span class="o">*</span> <span class="n">max_value</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">7</span> <span class="o">*</span> <span class="n">max_value</span> <span class="o">/</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#ffda03&#39;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span> <span class="o">*</span> <span class="n">max_value</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span> <span class="o">*</span> <span class="n">max_value</span> <span class="o">/</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#32860e&#39;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span> <span class="o">*</span> <span class="n">max_value</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span> <span class="n">max_value</span><span class="p">],</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#c040ff&#39;</span><span class="p">}</span>
+                <span class="p">]}</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">indicator</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;&lt;b&gt;&#39;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;&lt;/b&gt;&#39;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,0,0,0)&quot;</span><span class="p">,</span>
+        <span class="n">template</span><span class="o">=</span><span class="s1">&#39;seaborn&#39;</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">250</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_conversation_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_conversation_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_conversation_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes an indicator based on the number of conversations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing conversation count data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The conversation indicator value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conversations</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">conversations</span> <span class="o">=</span> <span class="n">conversations</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">])</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Total de conversaciones&#39;</span>
+    <span class="n">conversations_indicator</span> <span class="o">=</span> <span class="n">create_conversations_indicator</span><span class="p">(</span><span class="n">conversations</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">conversations_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_mean_conversation_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_mean_conversation_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_mean_conversation_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the mean number of conversations per student.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing conversation data per student.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The mean conversation count per student.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mean_conversations</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">students</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="k">if</span> <span class="n">students</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">mean_conversations</span> <span class="o">=</span> <span class="n">mean_conversations</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">])</span>
+        <span class="n">mean_conversations</span> <span class="o">=</span> <span class="n">mean_conversations</span> <span class="o">/</span> <span class="n">students</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Media de conversaciones por estudiante&#39;</span>
+    <span class="n">mean_conversations_indicator</span> <span class="o">=</span> <span class="n">create_conversations_indicator</span><span class="p">(</span><span class="n">mean_conversations</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mean_conversations_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_mean_size_conversations_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_mean_size_conversations_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_mean_size_conversations_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the average conversation length.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing conversation size metrics.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The mean conversation size.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mean_size_conversations</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">students</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="k">if</span> <span class="n">students</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">useful_students</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">useful_conversations</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">student_size_conversations</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">conversation</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">useful_conversations</span> <span class="o">=</span> <span class="n">useful_conversations</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">student_size_conversations</span> <span class="o">=</span> <span class="n">student_size_conversations</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">useful_conversations</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">useful_students</span> <span class="o">=</span> <span class="n">useful_students</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">student_mean_size_conversations</span> <span class="o">=</span> <span class="n">student_size_conversations</span> <span class="o">/</span> <span class="n">useful_conversations</span>
+                <span class="n">mean_size_conversations</span> <span class="o">=</span> <span class="n">mean_size_conversations</span> <span class="o">+</span> <span class="n">student_mean_size_conversations</span>
+        <span class="n">mean_size_conversations</span> <span class="o">=</span> <span class="n">mean_size_conversations</span> <span class="o">/</span> <span class="n">useful_students</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Media de caracteres por conversación&#39;</span>
+    <span class="n">mean_size_conversations_indicator</span> <span class="o">=</span> <span class="n">create_conversations_indicator</span><span class="p">(</span><span class="n">mean_size_conversations</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mean_size_conversations_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_mean_time_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_mean_time_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_mean_time_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the average conversation time per student.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing conversation time metrics.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The mean time spent in conversations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mean_total_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">students</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="k">if</span> <span class="n">students</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">useful_students</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;total_time&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="p">{}:</span>
+                <span class="n">useful_students</span> <span class="o">=</span> <span class="n">useful_students</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">mean_total_time</span> <span class="o">=</span> <span class="n">mean_total_time</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;total_time&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">useful_students</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">mean_total_time</span> <span class="o">=</span> <span class="n">mean_total_time</span> <span class="o">/</span> <span class="n">useful_students</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Media de uso (segs) por estudiante&#39;</span>
+    <span class="n">mean_total_time_indicator</span> <span class="o">=</span> <span class="n">create_conversations_indicator</span><span class="p">(</span><span class="n">mean_total_time</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mean_total_time_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_student_conversations_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_student_conversations_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_student_conversations_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves the number of conversations per student.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing conversation data per student.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list of conversation counts per student.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">students_with_conversations</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">students</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="k">if</span> <span class="n">students</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">]))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="n">conversation</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+                <span class="n">students_with_conversations</span> <span class="o">=</span> <span class="n">students_with_conversations</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">students_with_conversations</span> <span class="o">=</span> <span class="p">(</span><span class="n">students_with_conversations</span> <span class="o">/</span> <span class="n">students</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">% d</span><span class="s1">e estudiantes con conversaciones&#39;</span>
+    <span class="n">student_conversations_indicator</span> <span class="o">=</span> <span class="n">create_conversations_indicator</span><span class="p">(</span><span class="n">students_with_conversations</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">student_conversations_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="generate_conversations_indicators">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.generate_conversations_indicators">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_conversations_indicators</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates indicators related to conversations, including counts and average sizes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing conversation statistics.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        A set of conversation-related indicators.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conversations_indicator</span> <span class="o">=</span> <span class="n">get_conversation_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">mean_conversations_indicator</span> <span class="o">=</span> <span class="n">get_mean_conversation_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">mean_time_indicator</span> <span class="o">=</span> <span class="n">get_mean_time_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">mean_size_conversations_indicator</span> <span class="o">=</span> <span class="n">get_mean_size_conversations_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">student_conversations_indicator</span> <span class="o">=</span> <span class="n">get_student_conversations_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">conversations_indicator</span><span class="p">,</span> <span class="n">mean_size_conversations_indicator</span><span class="p">,</span> <span class="n">mean_conversations_indicator</span><span class="p">,</span>
+            <span class="n">mean_time_indicator</span><span class="p">,</span> <span class="n">student_conversations_indicator</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_value_feedback">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_value_feedback">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_value_feedback</span><span class="p">(</span><span class="n">feedback_type</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts a specific feedback value from the dataset.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    feedback_type: str</span>
+<span class="sd">        Type of feedback to evaluate.</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing feedback data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The extracted feedback value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">radio_value_trace_pf</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">students_with_conversations</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pf</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">students_with_conversations</span> <span class="o">=</span> <span class="n">students_with_conversations</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">useful_conversations</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">conversation</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;feedback&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">feedback</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;feedback&#39;</span><span class="p">][</span><span class="n">feedback_type</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">feedback</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">useful_conversations</span> <span class="o">=</span> <span class="n">useful_conversations</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="n">pf</span> <span class="o">=</span> <span class="n">pf</span> <span class="o">+</span> <span class="n">feedback</span>
+            <span class="k">if</span> <span class="n">useful_conversations</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">mean_pf</span> <span class="o">=</span> <span class="n">pf</span> <span class="o">/</span> <span class="n">useful_conversations</span>
+                <span class="n">radio_value_trace_pf</span> <span class="o">=</span> <span class="n">radio_value_trace_pf</span> <span class="o">+</span> <span class="n">mean_pf</span>
+    <span class="k">if</span> <span class="n">students_with_conversations</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">radio_value_trace_pf</span> <span class="o">=</span> <span class="n">radio_value_trace_pf</span> <span class="o">/</span> <span class="n">students_with_conversations</span>
+    <span class="k">return</span> <span class="n">radio_value_trace_pf</span></div>
+
+
+
+<div class="viewcode-block" id="get_precision_feedback_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_precision_feedback_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_precision_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts the precision feedback indicator from student feedback.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing student feedback information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The precision feedback score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">radio_value_trace</span> <span class="o">=</span> <span class="n">get_value_feedback</span><span class="p">(</span><span class="s1">&#39;precision_feedback&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Precisión del sistema&#39;</span>
+    <span class="n">precision_feedback_indicator</span> <span class="o">=</span> <span class="n">create_feedback_indicator</span><span class="p">(</span><span class="n">radio_value_trace</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">precision_feedback_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_utility_feedback_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_utility_feedback_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_utility_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts the utility feedback indicator from student feedback.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing student feedback information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The utility feedback score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">radio_value_trace</span> <span class="o">=</span> <span class="n">get_value_feedback</span><span class="p">(</span><span class="s1">&#39;utility_feedback&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Utilidad del sistema&#39;</span>
+    <span class="n">utility_feedback_indicator</span> <span class="o">=</span> <span class="n">create_feedback_indicator</span><span class="p">(</span><span class="n">radio_value_trace</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">utility_feedback_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_learning_feedback_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_learning_feedback_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_learning_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts the learning feedback indicator from student feedback.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing student feedback information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The learning feedback score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">radio_value_trace</span> <span class="o">=</span> <span class="n">get_value_feedback</span><span class="p">(</span><span class="s1">&#39;learning_feedback&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Aprendizaje obtenido&#39;</span>
+    <span class="n">learning_feedback_indicator</span> <span class="o">=</span> <span class="n">create_feedback_indicator</span><span class="p">(</span><span class="n">radio_value_trace</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">learning_feedback_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_mean_feedback_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_mean_feedback_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_mean_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the mean feedback indicator across all students.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing student feedback information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The mean feedback score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">radio_value_trace_pf</span> <span class="o">=</span> <span class="n">get_value_feedback</span><span class="p">(</span><span class="s1">&#39;precision_feedback&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">radio_value_trace_uf</span> <span class="o">=</span> <span class="n">get_value_feedback</span><span class="p">(</span><span class="s1">&#39;utility_feedback&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">radio_value_trace_lf</span> <span class="o">=</span> <span class="n">get_value_feedback</span><span class="p">(</span><span class="s1">&#39;learning_feedback&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">radio_value_trace</span> <span class="o">=</span> <span class="p">(</span><span class="n">radio_value_trace_pf</span> <span class="o">+</span> <span class="n">radio_value_trace_uf</span> <span class="o">+</span> <span class="n">radio_value_trace_lf</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Capacidad conjunta del sistema&#39;</span>
+    <span class="n">mean_feedback_indicator</span> <span class="o">=</span> <span class="n">create_feedback_indicator</span><span class="p">(</span><span class="n">radio_value_trace</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mean_feedback_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="get_students_feedback_indicator">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_students_feedback_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_students_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves feedback indicators for individual students.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing student feedback information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list of feedback scores per student.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">students_feedback</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">students</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="k">if</span> <span class="n">students</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">feedbacks</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">]))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="n">conversation</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;feedback&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+                <span class="n">feedbacks</span> <span class="o">=</span> <span class="n">feedbacks</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">students_feedback</span> <span class="o">=</span> <span class="p">(</span><span class="n">feedbacks</span> <span class="o">/</span> <span class="n">students</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">% d</span><span class="s1">e estudiantes con opinión&#39;</span>
+    <span class="n">students_feedback_indicator</span> <span class="o">=</span> <span class="n">create_feedback_indicator</span><span class="p">(</span><span class="n">students_feedback</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">students_feedback_indicator</span></div>
+
+
+
+<div class="viewcode-block" id="generate_feedback_indicators">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.generate_feedback_indicators">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_feedback_indicators</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates feedback indicators based on student feedback data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing feedback metrics.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        A set of feedback indicators including precision, utility, learning, mean feedback, and student feedback.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">precision_feedback_indicator</span> <span class="o">=</span> <span class="n">get_precision_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">utility_feedback_indicator</span> <span class="o">=</span> <span class="n">get_utility_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">learning_feedback_indicator</span> <span class="o">=</span> <span class="n">get_learning_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">mean_feedback_indicator</span> <span class="o">=</span> <span class="n">get_mean_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">students_feedback_indicator</span> <span class="o">=</span> <span class="n">get_students_feedback_indicator</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">precision_feedback_indicator</span><span class="p">,</span> <span class="n">utility_feedback_indicator</span><span class="p">,</span> <span class="n">learning_feedback_indicator</span><span class="p">,</span>
+            <span class="n">mean_feedback_indicator</span><span class="p">,</span> <span class="n">students_feedback_indicator</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="generate_cloud_plot">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.generate_cloud_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_cloud_plot</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a word cloud from frequently used keywords.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing keyword frequency data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list representing word cloud data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">keywords_by_student</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;global_keywords&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">find_keyword</span><span class="p">(</span><span class="n">keyword</span><span class="p">,</span> <span class="n">keywords_by_student</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">keywords_by_student</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">keywords_by_student</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;global_keywords&#39;</span><span class="p">]</span>
+                                                                                <span class="p">[</span><span class="n">keyword</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">keywords_by_student</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">keyword</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;global_keywords&#39;</span><span class="p">][</span><span class="n">keyword</span><span class="p">])])</span>
+
+    <span class="n">keywords_by_student</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">keywords_by_student</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="mi">11</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">keywords_by_student</span></div>
+
+
+
+<div class="viewcode-block" id="generate_total_time_plot">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.generate_total_time_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_total_time_plot</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a plot showing total conversation time per student.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing time spent by students.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    go.Figure</span>
+<span class="sd">        A Plotly figure visualizing the total time spent in conversations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total_time_by_student</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">total_time_by_student</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;total_time&#39;</span><span class="p">])</span>
+
+    <span class="n">total_time_plot</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+               <span class="n">y</span><span class="o">=</span><span class="n">total_time_by_student</span><span class="p">,</span>
+               <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Bar Plot&#39;</span><span class="p">,</span>
+               <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#1489BA&#39;</span><span class="p">),</span>
+               <span class="n">text</span><span class="o">=</span><span class="n">total_time_by_student</span><span class="p">,</span>
+               <span class="n">hoverinfo</span><span class="o">=</span><span class="s1">&#39;x+y&#39;</span>
+               <span class="p">))</span>
+
+    <span class="n">total_time_plot</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;&lt;b&gt;Tiempo total (segs) de utilización en la asignatura&lt;/b&gt;&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)),</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Estudiantes&#39;</span><span class="p">,</span>
+            <span class="n">titlefont_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">tickfont_size</span><span class="o">=</span><span class="mi">8</span>
+        <span class="p">),</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Tiempo (segundos)&#39;</span><span class="p">,</span>
+            <span class="n">titlefont_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">tickfont_size</span><span class="o">=</span><span class="mi">8</span>
+        <span class="p">),</span>
+        <span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">bgcolor</span><span class="o">=</span><span class="s1">&#39;rgba(255, 255, 255, 0)&#39;</span><span class="p">,</span>
+            <span class="n">bordercolor</span><span class="o">=</span><span class="s1">&#39;rgba(255, 255, 255, 0)&#39;</span>
+        <span class="p">),</span>
+        <span class="n">barmode</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span>
+        <span class="n">bargap</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+        <span class="n">bargroupgap</span><span class="o">=</span><span class="mf">0.1</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_time_plot</span></div>
+
+
+
+<div class="viewcode-block" id="generate_conversations_plot">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.generate_conversations_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_conversations_plot</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a bar chart for conversation statistics.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing conversation metrics.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    go.Figure</span>
+<span class="sd">        A Plotly figure representing the conversations bar chart.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conversations_by_student</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">conversations_by_student</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">]))</span>
+
+    <span class="n">conversations_plot</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+               <span class="n">y</span><span class="o">=</span><span class="n">conversations_by_student</span><span class="p">,</span>
+               <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Bar Plot&#39;</span><span class="p">,</span>
+               <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#1489BA&#39;</span><span class="p">),</span>
+               <span class="n">text</span><span class="o">=</span><span class="n">conversations_by_student</span><span class="p">,</span>
+               <span class="n">hoverinfo</span><span class="o">=</span><span class="s1">&#39;x+y&#39;</span>
+               <span class="p">))</span>
+
+    <span class="n">conversations_plot</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;&lt;b&gt;Conversaciones con el chatbot en la asignatura&lt;/b&gt;&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)),</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Estudiantes&#39;</span><span class="p">,</span>
+            <span class="n">titlefont_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">tickfont_size</span><span class="o">=</span><span class="mi">8</span>
+        <span class="p">),</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Tiempo (segundos)&#39;</span><span class="p">,</span>
+            <span class="n">titlefont_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">tickfont_size</span><span class="o">=</span><span class="mi">8</span>
+        <span class="p">),</span>
+        <span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">bgcolor</span><span class="o">=</span><span class="s1">&#39;rgba(255, 255, 255, 0)&#39;</span><span class="p">,</span>
+            <span class="n">bordercolor</span><span class="o">=</span><span class="s1">&#39;rgba(255, 255, 255, 0)&#39;</span>
+        <span class="p">),</span>
+        <span class="n">barmode</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span>
+        <span class="n">bargap</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+        <span class="n">bargroupgap</span><span class="o">=</span><span class="mf">0.1</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">conversations_plot</span></div>
+
+
+
+<div class="viewcode-block" id="generate_data_students_radar_plot">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.generate_data_students_radar_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_data_students_radar_plot</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Processes student data for visualization in a radar plot.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing student performance data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Processed data structured for radar plot visualization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">radio_value_trace_uf</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">radio_value_trace_lf</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">radio_value_trace_pf</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">uf</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">lf</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">pf</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">conversation</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;feedback&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+                <span class="n">uf</span> <span class="o">=</span> <span class="n">uf</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;feedback&#39;</span><span class="p">][</span><span class="s1">&#39;utility_feedback&#39;</span><span class="p">])</span>
+                <span class="n">lf</span> <span class="o">=</span> <span class="n">lf</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;feedback&#39;</span><span class="p">][</span><span class="s1">&#39;learning_feedback&#39;</span><span class="p">])</span>
+                <span class="n">pf</span> <span class="o">=</span> <span class="n">pf</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;feedback&#39;</span><span class="p">][</span><span class="s1">&#39;precision_feedback&#39;</span><span class="p">])</span>
+
+        <span class="n">radio_value_trace_uf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uf</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">])))</span>
+        <span class="n">radio_value_trace_lf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lf</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">])))</span>
+        <span class="n">radio_value_trace_pf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pf</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;conversations&#39;</span><span class="p">])))</span>
+    <span class="k">return</span> <span class="n">radio_value_trace_uf</span><span class="p">,</span> <span class="n">radio_value_trace_lf</span><span class="p">,</span> <span class="n">radio_value_trace_pf</span></div>
+
+
+
+<div class="viewcode-block" id="generate_radar_plot">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.generate_radar_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_radar_plot</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a radar chart to visualize multiple metrics.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dictionary containing student performance data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    go.Figure</span>
+<span class="sd">        A Plotly figure representing the radar chart.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">radio_value_trace_uf</span><span class="p">,</span> <span class="n">radio_value_trace_lf</span><span class="p">,</span> <span class="n">radio_value_trace_pf</span> <span class="o">=</span> <span class="n">generate_data_students_radar_plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;b&gt;Utilidad&lt;/b&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;b&gt;Aprendizaje&lt;/b&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;b&gt;Precisión&lt;/b&gt;&#39;</span><span class="p">]</span>
+    <span class="n">radar_plot</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">radio_value_trace_uf</span><span class="p">)):</span>
+        <span class="n">radar_plot</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatterpolar</span><span class="p">(</span>
+            <span class="n">r</span><span class="o">=</span><span class="p">[</span><span class="n">radio_value_trace_uf</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">radio_value_trace_lf</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">radio_value_trace_pf</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span>
+            <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;toself&#39;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">i</span><span class="p">]</span>
+        <span class="p">))</span>
+
+    <span class="n">radar_plot</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">polar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">radialaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+            <span class="p">)),</span>
+
+        <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;&lt;b&gt;Retroalimentación de los estudiantes&lt;/b&gt;&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)),</span>
+        <span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;&lt;b&gt;Estudiantes&lt;/b&gt;&#39;</span><span class="p">),</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">350</span>
+
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">radar_plot</span></div>
+
+
+
+<div class="viewcode-block" id="update_indicators">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.update_indicators">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_indicators</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">mean_time_indicator</span><span class="p">,</span> <span class="n">conversations_indicator</span><span class="p">,</span> <span class="n">mean_conversations_indicator</span><span class="p">,</span>
+                      <span class="n">mean_size_conversations_indicator</span><span class="p">,</span> <span class="n">student_conversations_indicator</span><span class="p">,</span>
+                      <span class="n">precision_feedback_indicator</span><span class="p">,</span> <span class="n">utility_feedback_indicator</span><span class="p">,</span> <span class="n">learning_feedback_indicator</span><span class="p">,</span>
+                      <span class="n">mean_feedback_indicator</span><span class="p">,</span> <span class="n">students_feedback_indicator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates the dashboard indicators based on response data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    response : TestResponse object</span>
+<span class="sd">        The response object containing the updated data.</span>
+<span class="sd">    mean_time_indicator : any</span>
+<span class="sd">        Placeholder for mean conversation time indicator.</span>
+<span class="sd">    conversations_indicator : any</span>
+<span class="sd">        Placeholder for total conversations indicator.</span>
+<span class="sd">    mean_conversations_indicator : any</span>
+<span class="sd">        Placeholder for average conversations per student indicator.</span>
+<span class="sd">    mean_size_conversations_indicator : any</span>
+<span class="sd">        Placeholder for average conversation size indicator.</span>
+<span class="sd">    student_conversations_indicator : any</span>
+<span class="sd">        Placeholder for student-specific conversations indicator.</span>
+<span class="sd">    precision_feedback_indicator : any</span>
+<span class="sd">        Placeholder for precision feedback indicator.</span>
+<span class="sd">    utility_feedback_indicator : any</span>
+<span class="sd">        Placeholder for utility feedback indicator.</span>
+<span class="sd">    learning_feedback_indicator : any</span>
+<span class="sd">        Placeholder for learning feedback indicator.</span>
+<span class="sd">    mean_feedback_indicator : any</span>
+<span class="sd">        Placeholder for overall feedback indicator.</span>
+<span class="sd">    students_feedback_indicator : any</span>
+<span class="sd">        Placeholder for student feedback summary.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Updated values for all indicators.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">())</span>
+        <span class="n">conversations_indicator</span><span class="p">,</span> <span class="n">mean_size_conversations_indicator</span><span class="p">,</span> <span class="n">mean_conversations_indicator</span><span class="p">,</span> <span class="n">mean_time_indicator</span><span class="p">,</span> \
+            <span class="n">student_conversations_indicator</span> <span class="o">=</span> <span class="n">generate_conversations_indicators</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">precision_feedback_indicator</span><span class="p">,</span> <span class="n">utility_feedback_indicator</span><span class="p">,</span> <span class="n">learning_feedback_indicator</span><span class="p">,</span>
+         <span class="n">mean_feedback_indicator</span><span class="p">,</span> <span class="n">students_feedback_indicator</span><span class="p">)</span> <span class="o">=</span> <span class="n">generate_feedback_indicators</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mean_time_indicator</span><span class="p">,</span> <span class="n">conversations_indicator</span><span class="p">,</span> <span class="n">mean_conversations_indicator</span><span class="p">,</span>
+            <span class="n">mean_size_conversations_indicator</span><span class="p">,</span> <span class="n">student_conversations_indicator</span><span class="p">,</span> <span class="n">precision_feedback_indicator</span><span class="p">,</span>
+            <span class="n">utility_feedback_indicator</span><span class="p">,</span> <span class="n">learning_feedback_indicator</span><span class="p">,</span> <span class="n">mean_feedback_indicator</span><span class="p">,</span>
+            <span class="n">students_feedback_indicator</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="update_figures">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.update_figures">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_figures</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">total_time_plot</span><span class="p">,</span> <span class="n">conversations_plot</span><span class="p">,</span> <span class="n">radar_plot</span><span class="p">,</span> <span class="n">cloud_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates the dashboard figures based on response data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    response : TestResponse object</span>
+<span class="sd">        The response object containing the updated data.</span>
+<span class="sd">    total_time_plot : any</span>
+<span class="sd">        Placeholder for total time plot.</span>
+<span class="sd">    conversations_plot : any</span>
+<span class="sd">        Placeholder for conversations plot.</span>
+<span class="sd">    radar_plot : any</span>
+<span class="sd">        Placeholder for radar chart.</span>
+<span class="sd">    cloud_list : any</span>
+<span class="sd">        Placeholder for word cloud data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Updated values for all figures.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">())</span>
+        <span class="n">total_time_plot</span> <span class="o">=</span> <span class="n">generate_total_time_plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">conversations_plot</span> <span class="o">=</span> <span class="n">generate_conversations_plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">radar_plot</span> <span class="o">=</span> <span class="n">generate_radar_plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">cloud_list</span> <span class="o">=</span> <span class="n">generate_cloud_plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_time_plot</span><span class="p">,</span> <span class="n">conversations_plot</span><span class="p">,</span> <span class="n">radar_plot</span><span class="p">,</span> <span class="n">cloud_list</span></div>
+
+
+
+<div class="viewcode-block" id="get_info_from_student">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_info_from_student">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_info_from_student</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves stored student information for a given career and subject.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    email : str</span>
+<span class="sd">        The email of the student.</span>
+<span class="sd">    selected_career : str</span>
+<span class="sd">        The career associated with the student.</span>
+<span class="sd">    selected_subject : str</span>
+<span class="sd">        The subject associated with the student.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    InfoValues or None</span>
+<span class="sd">        The student&#39;s stored information if found, otherwise None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_manager</span> <span class="o">=</span> <span class="n">UserManager</span><span class="p">()</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">user_manager</span><span class="o">.</span><span class="n">query_users_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+    <span class="n">info_values</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">student</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">student</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;career&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">selected_career</span> <span class="ow">and</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">selected_subject</span><span class="p">:</span>
+                <span class="n">subj</span> <span class="o">=</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;info_values&#39;</span><span class="p">]</span>
+                <span class="n">info_values</span> <span class="o">=</span> <span class="n">InfoValues</span><span class="p">()</span>
+                <span class="n">min_time</span> <span class="o">=</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;min_time&#39;</span><span class="p">]</span>
+                <span class="n">max_time</span> <span class="o">=</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;max_time&#39;</span><span class="p">]</span>
+                <span class="n">total_time</span> <span class="o">=</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;total_time&#39;</span><span class="p">]</span>
+                <span class="n">times</span> <span class="o">=</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">]</span>
+                <span class="n">global_keywords</span> <span class="o">=</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;global_keywords&#39;</span><span class="p">]</span>
+                <span class="n">conversations</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">conv</span> <span class="ow">in</span> <span class="n">subj</span><span class="p">[</span><span class="s1">&#39;conversations&#39;</span><span class="p">]:</span>
+                    <span class="n">info_conv</span> <span class="o">=</span> <span class="n">Conversation</span><span class="p">()</span>
+                    <span class="n">date</span> <span class="o">=</span> <span class="n">conv</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
+                    <span class="n">time_init</span> <span class="o">=</span> <span class="n">conv</span><span class="p">[</span><span class="s1">&#39;time_init&#39;</span><span class="p">]</span>
+                    <span class="n">time_end</span> <span class="o">=</span> <span class="n">conv</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">]</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">conv</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+                    <span class="n">feedback</span> <span class="o">=</span> <span class="n">conv</span><span class="p">[</span><span class="s1">&#39;feedback&#39;</span><span class="p">]</span>
+                    <span class="n">keywords</span> <span class="o">=</span> <span class="n">conv</span><span class="p">[</span><span class="s1">&#39;keywords&#39;</span><span class="p">]</span>
+                    <span class="n">info_conv</span><span class="o">.</span><span class="n">set_conversation</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">time_init</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">feedback</span><span class="p">,</span> <span class="n">keywords</span><span class="p">)</span>
+                    <span class="n">conversations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info_conv</span><span class="p">)</span>
+                <span class="n">info_values</span><span class="o">.</span><span class="n">set_info_values</span><span class="p">(</span><span class="n">min_time</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">conversations</span><span class="p">,</span> <span class="n">global_keywords</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">info_values</span></div>
+
+
+
+<div class="viewcode-block" id="get_info_from_students">
+<a class="viewcode-back" href="../../vilt.html#vilt.dashmanager.get_info_from_students">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_info_from_students</span><span class="p">(</span><span class="n">selected_students</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves information for multiple students and structures it in a dictionary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    selected_students : list</span>
+<span class="sd">        List of student emails.</span>
+<span class="sd">    selected_career : str</span>
+<span class="sd">        The career associated with the students.</span>
+<span class="sd">    selected_subject : str</span>
+<span class="sd">        The subject associated with the students.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        A dictionary containing structured student information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">global_info_subject</span> <span class="o">=</span> <span class="n">GlobalInfoSubject</span><span class="p">(</span><span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">email_student</span> <span class="ow">in</span> <span class="n">selected_students</span><span class="p">:</span>
+        <span class="n">info_values</span> <span class="o">=</span> <span class="n">get_info_from_student</span><span class="p">(</span><span class="n">email_student</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">global_info_subject</span><span class="o">.</span><span class="n">set_global_info_subject</span><span class="p">(</span><span class="n">email_student</span><span class="p">,</span> <span class="n">info_values</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">to_json</span><span class="p">(</span><span class="n">global_info_subject</span><span class="o">.</span><span class="n">students</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alberto Fernández Isabel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

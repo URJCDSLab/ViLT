@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vilt.infomanager &mdash; Virtual Learning Tutor (ViLT) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Virtual Learning Tutor (ViLT)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Virtual Learning Tutor (ViLT)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vilt.infomanager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vilt.infomanager</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+
+<div class="viewcode-block" id="get_string_from_career_subject">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.get_string_from_career_subject">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_string_from_career_subject</span><span class="p">(</span><span class="n">subject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a subject dictionary into a formatted string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subject : dict</span>
+<span class="sd">        A dictionary containing &#39;career&#39; and &#39;subject&#39; keys.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : str</span>
+<span class="sd">        A formatted string combining career and subject.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">subject</span><span class="p">[</span><span class="s1">&#39;career&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;) &#39;</span> <span class="o">+</span> <span class="n">subject</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+        <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="get_career_subject_from_string">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.get_career_subject_from_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_career_subject_from_string</span><span class="p">(</span><span class="n">subject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts career and subject from a formatted string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subject : str</span>
+<span class="sd">        A formatted string containing career and subject.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    career : str</span>
+<span class="sd">        Extracted career name.</span>
+<span class="sd">    subject : str</span>
+<span class="sd">        Extracted subject name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index1</span> <span class="o">=</span> <span class="n">subject</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)</span>
+    <span class="n">index2</span> <span class="o">=</span> <span class="n">subject</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">)</span>
+    <span class="n">career</span> <span class="o">=</span> <span class="n">subject</span><span class="p">[</span><span class="n">index1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">index2</span><span class="p">]</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span><span class="p">[</span><span class="n">index2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">subject</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">career</span><span class="p">,</span> <span class="n">subject</span></div>
+
+
+
+<div class="viewcode-block" id="update_subject_keywords">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.update_subject_keywords">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_subject_keywords</span><span class="p">(</span><span class="n">current_subject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates keyword frequency for a given subject.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    current_subject : dict</span>
+<span class="sd">        A dictionary containing conversations and keywords.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    global_keywords : dict</span>
+<span class="sd">        A dictionary mapping keywords to their frequency.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">global_keywords</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">conversation</span> <span class="ow">in</span> <span class="n">current_subject</span><span class="p">[</span><span class="s1">&#39;conversations&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;keywords&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">keyword</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">global_keywords</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">global_keywords</span><span class="p">[</span><span class="n">keyword</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">global_keywords</span><span class="p">[</span><span class="n">keyword</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">global_keywords</span></div>
+
+
+
+<div class="viewcode-block" id="update_subject_parameters">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.update_subject_parameters">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_subject_parameters</span><span class="p">(</span><span class="n">subject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes time-related statistics for a subject&#39;s conversations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subject : dict</span>
+<span class="sd">        A dictionary containing conversation data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    total_time : float</span>
+<span class="sd">        Total conversation time in minutes.</span>
+<span class="sd">    max_time : float</span>
+<span class="sd">        Maximum conversation time in minutes.</span>
+<span class="sd">    min_time : float</span>
+<span class="sd">        Minimum conversation time in minutes.</span>
+<span class="sd">    times : int</span>
+<span class="sd">        Number of conversations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">subject</span><span class="p">[</span><span class="s1">&#39;conversations&#39;</span><span class="p">]))</span>
+    <span class="n">total_time</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">max_time</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">min_time</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">365</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">conversation</span> <span class="ow">in</span> <span class="n">subject</span><span class="p">[</span><span class="s1">&#39;conversations&#39;</span><span class="p">]:</span>
+        <span class="n">time_spent</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> <span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span> <span class="o">-</span>
+                      <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">conversation</span><span class="p">[</span><span class="s1">&#39;time_init&#39;</span><span class="p">],</span> <span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">))</span>
+        <span class="n">total_time</span> <span class="o">+=</span> <span class="n">time_spent</span>
+        <span class="k">if</span> <span class="n">min_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">time_spent</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">():</span>
+            <span class="n">min_time</span> <span class="o">=</span> <span class="n">time_spent</span>
+        <span class="k">if</span> <span class="n">max_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">time_spent</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">():</span>
+            <span class="n">max_time</span> <span class="o">=</span> <span class="n">time_spent</span>
+
+    <span class="n">max_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">max_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">min_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">min_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">total_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">total_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span> <span class="n">min_time</span><span class="p">,</span> <span class="n">times</span></div>
+
+
+
+<div class="viewcode-block" id="InfoValues">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.InfoValues">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InfoValues</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stores statistics and keyword information for a subject.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes default values for statistics and information about conversations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_time</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_time</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_time</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conversations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_keywords</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="InfoValues.set_info_values">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.InfoValues.set_info_values">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_info_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_time</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">conversations</span><span class="p">,</span> <span class="n">global_keywords</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets specific values for the subject&#39;s statistics and conversations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min_time : timedelta</span>
+<span class="sd">            Minimum recorded interaction time.</span>
+<span class="sd">        max_time : timedelta</span>
+<span class="sd">            Maximum recorded interaction time.</span>
+<span class="sd">        total_time : timedelta</span>
+<span class="sd">            Total accumulated interaction time.</span>
+<span class="sd">        times : int</span>
+<span class="sd">            Total number of recorded interactions.</span>
+<span class="sd">        conversations : list</span>
+<span class="sd">            List of conversations related to the subject.</span>
+<span class="sd">        global_keywords : dict</span>
+<span class="sd">            Dictionary of global keywords and their frequencies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_time</span> <span class="o">=</span> <span class="n">min_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_time</span> <span class="o">=</span> <span class="n">max_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_time</span> <span class="o">=</span> <span class="n">total_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">times</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conversations</span> <span class="o">=</span> <span class="n">conversations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_keywords</span> <span class="o">=</span> <span class="n">global_keywords</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="InfoSubject">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.InfoSubject">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InfoSubject</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a subject with associated metadata.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a subject with a career and default information values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The career associated with the subject.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The name of the subject.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">career</span> <span class="o">=</span> <span class="n">selected_career</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">selected_subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info_values</span> <span class="o">=</span> <span class="n">InfoValues</span><span class="p">()</span>
+
+<div class="viewcode-block" id="InfoSubject.set_info_subject">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.InfoSubject.set_info_subject">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_info_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_time</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">conversations</span><span class="p">,</span> <span class="n">global_keywords</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates subject information values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min_time : timedelta</span>
+<span class="sd">            Minimum recorded interaction time.</span>
+<span class="sd">        max_time : timedelta</span>
+<span class="sd">            Maximum recorded interaction time.</span>
+<span class="sd">        total_time : timedelta</span>
+<span class="sd">            Total accumulated interaction time.</span>
+<span class="sd">        times : int</span>
+<span class="sd">            Total number of recorded interactions.</span>
+<span class="sd">        conversations : list</span>
+<span class="sd">            List of conversations related to the subject.</span>
+<span class="sd">        global_keywords : dict</span>
+<span class="sd">            Dictionary of global keywords and their frequencies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info_values</span><span class="o">.</span><span class="n">set_info_values</span><span class="p">(</span><span class="n">min_time</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">conversations</span><span class="p">,</span> <span class="n">global_keywords</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Conversation">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.Conversation">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Conversation</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a conversation with metadata and feedback.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes conversation attributes with default values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%Y&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_init</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Conversation.set_conversation">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.Conversation.set_conversation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_conversation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time_init</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">feedback</span><span class="p">,</span> <span class="n">keywords</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets conversation attributes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        date : str</span>
+<span class="sd">            The date when the conversation took place (format: DD/MM/YYYY).</span>
+<span class="sd">        time_init : str</span>
+<span class="sd">            The start time of the conversation (format: HH:MM:SS).</span>
+<span class="sd">        time_end : str</span>
+<span class="sd">            The end time of the conversation (format: HH:MM:SS).</span>
+<span class="sd">        text : str</span>
+<span class="sd">            The content of the conversation.</span>
+<span class="sd">        feedback : dict</span>
+<span class="sd">            A dictionary containing feedback related to the conversation.</span>
+<span class="sd">        keywords : list</span>
+<span class="sd">            A list of keywords extracted from the conversation.</span>
+<span class="sd">        active : bool, optional</span>
+<span class="sd">            Indicates whether the conversation is active (default is False).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_init</span> <span class="o">=</span> <span class="n">time_init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_end</span> <span class="o">=</span> <span class="n">time_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedback</span> <span class="o">=</span> <span class="n">feedback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="n">keywords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="n">active</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="GlobalInfoSubject">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.GlobalInfoSubject">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GlobalInfoSubject</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents global information about a subject across students.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a global subject with student data storage.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The career associated with the subject.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The name of the subject.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">students</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">career</span> <span class="o">=</span> <span class="n">selected_career</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">selected_subject</span>
+
+<div class="viewcode-block" id="GlobalInfoSubject.set_global_info_subject">
+<a class="viewcode-back" href="../../vilt.html#vilt.infomanager.GlobalInfoSubject.set_global_info_subject">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_global_info_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">student</span><span class="p">,</span> <span class="n">info_values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Associates a student with subject information values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        student : str</span>
+<span class="sd">            The name or identifier of the student.</span>
+<span class="sd">        info_values : InfoValues</span>
+<span class="sd">            The information values associated with the student for the subject.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">students</span><span class="p">[</span><span class="n">student</span><span class="p">]</span> <span class="o">=</span> <span class="n">info_values</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alberto Fernández Isabel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

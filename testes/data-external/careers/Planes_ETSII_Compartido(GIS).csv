@@ -1,0 +1,64 @@
+PLAN ACTUAL;;;
+CURSO 1;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Lógica;FBR;6
+1;Matemática Discreta y Álgebra;FBR;6
+1;Fundamentos físicos de la Informática;FBR;6
+1;Introducción a la Programación;OB;6
+1;Estadística;FBR;6
+2;Cálculo;FBR;6
+2;Principios Jurídicos Básicos: Deontología profesional e Igualdad;FBC;6
+2;Estructuras de datos;OB;6
+2;Introducción a la Informática;FBR;6
+2;Informática y Sociedad;FBC;6
+;;;60
+;;;
+CURSO 2;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+Anual;Idioma Moderno;FBC;6
+1;Programación orientada a objetos;OB;6
+1;Arquitectura e Ingeniería de Computadores;OB;6
+1;Bases de datos;OB;6
+1;Fundamentos de la Web;OB;6
+2;Análisis e Ingeniería de Requisitos;OB;6
+2;Métodos Operativos y Estadísticos de Gestión;FBR;6
+2;Redes de computadores;OB;6
+2;Diseño y Análisis de Algoritmos;OB;6
+2;Metodología de la Programación;OB;6
+;;;60
+;;;
+CURSO 3;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Investigación Operativa;OB;6
+1;Ingeniería del conocimiento;OB;6
+1;Procesos de Software;OB;6
+1;Diseño y Arquitectura del Software;OB;6
+1;Sistemas Operativos;OB;6
+2;Evolución y Adaptación del Software;OB;6
+2;Seguridad informática;OB;6
+2;Desarrollo de aplicaciones Web;OB;6
+2;Interacción persona-ordenador;OB;6
+2;Calidad del Software;OB;6
+;;;60
+;;;
+CURSO 4;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Optativa 1;OP;6
+1;Optativa 2;OP;6
+1;Reconocimiento académico de créditos;OB;6
+2;Optativa 3;OP;6
+2;Optativa 4;OP;6
+Anual;Practicas Externas;OB;15
+Anual;Trabajo Fin de Grado;OB;15
+;;;60
+;;;
+;;;
+OPTATIVAS;;;
+Semestre;Asignatura;Carácter;Créditos
+1;Ingeniería de Sistemas de Información; OP; 6
+1;Paradigmas de Programación; OP; 6
+1;Laboratorio de Dispositivos Móviles ; OP; 6
+2;Multimedia; OP; 6
+2;Programación Concurrente; OP; 6
+2;Tecnologías de Bases de Datos; OP; 6
+2;Gráficos por Computador; OP; 6

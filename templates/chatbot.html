@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css')}}">
+    <title>ViLT</title>
+</head>
+<body>
+<header>
+    <div class="image_header_vilt">
+        <form method="post" action="/feedback">
+            <input type="hidden" name="email_hidden" value="{{email}}"/>
+            <input type="hidden" name="career_hidden" value="{{selected_career}}"/>
+            <input type="hidden" name="subject_hidden" value="{{selected_subject}}" />
+            <input type="hidden" name="pos_hidden" value="{{pos}}" />
+            <input type="hidden" name="conv_pos_hidden" value="{{conv_pos}}" />
+            <button class="iconic" type="submit">
+                <img src= "{{url_for('static', filename='img/vilt.png')}}"
+                     alt="Vilt Logo" class="responsive" width="150" height="150">
+            </button>
+        </form>
+    </div>
+    <div class="image_header_dslab">
+        <img src= "{{url_for('static', filename='img/dslab_logo.png')}}" alt="DSLab Logo" class="responsive" width="450" height="150">
+    </div>
+</header>
+
+<main>
+    <div class="div-close">
+         <form method="post" action="/logout">
+             <input type="hidden" name="email_hidden" value="{{email}}" />
+             <label>
+                 <button class="button-close">Cerrar sesión</button>
+             </label>
+         </form>
+     </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                var messages = {{ messages|safe }};
+                for (var i=0; i<messages.length; i++) {
+                    alert(messages[i]);
+                }
+            </script>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid p-3">
+        <h5>Asignatura {{selected_subject}} de la titulación {{selected_career}}</h5>
+        <div class="output-container" id="response"></div>
+        <div class="input-container">
+            <form id="textform" method="post" action="">
+                <label for="prompt" class="form-label"><strong>Introduzca su pregunta:</strong></label>
+                <textarea class="form-control" type="textarea" id="prompt" name="prompt" rows="3" autofocus></textarea>
+                <input type="hidden" name="email_hidden" value="{{email}}" id="email_hidden"/>
+                <input type="hidden" name="career_hidden" value="{{selected_career}}" id="career_hidden" />
+                <input type="hidden" name="subject_hidden" value="{{selected_subject}}" id="subject_hidden" />
+                <button class="action-button" type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="div-back">
+        <form method="post" action="/feedback">
+            <input type="hidden" name="email_hidden" value="{{email}}" />
+            <input type="hidden" name="career_hidden" value="{{selected_career}}" />
+            <input type="hidden" name="subject_hidden" value="{{selected_subject}}" />
+            <input type="hidden" name="pos_hidden" value="{{pos}}" />
+            <input type="hidden" name="conv_pos_hidden" value="{{conv_pos}}" />
+            <button class="iconic" type="submit">
+                <img src= "{{url_for('static', filename='img/back.png')}}"
+                         alt="Back Logo" class="responsive" width="30" height="30">
+            </button>
+        </form>
+    </div>
+</main>
+<footer>
+    <div class="credits">
+        <p class="developers">
+            <a href="mailto:alberto.fernandez.isabel@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Alberto Fernández Isabel</br>
+            <a href="mailto:isaac.martin@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Isaac Martín de Diego </br>
+        </p>
+    </div>
+</footer>
+</body>
+</html>

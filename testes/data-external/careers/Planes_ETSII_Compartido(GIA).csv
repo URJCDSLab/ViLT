@@ -1,0 +1,65 @@
+CURSO 1;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Antecedentes y Desarrollo de la Inteligencia Artificial;FB;6
+1;Matemática Discreta y Álgebra;FB;6
+1;Cálculo;FB;6
+1;Lógica;FB;6
+1;Programación I;FB;6
+2;Ética y Legislación en Inteligencia Artificial;FB;6
+2;Probabilidad y Estadística;FB;6
+2;Programación II;OB;6
+2;Programación Declarativa;OB;6
+2;Fundamentos de Arquitectura de Computadores;FB;6
+;;;
+;;;
+CURSO 2;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+Anual;Idioma Moderno;FB;6
+1;Métodos Operativos y Estadísticos de Gestión;FB;6
+1;Estructuras de Datos I;OB;6
+1;Algoritmos;OB;6
+1;Informática Teórica y Lenguajes Formales;OB;6
+2;Estructuras de Datos II;OB;6
+2;Sistemas Operativos;OB;6
+2;Bases de Datos;OB;6
+2;Aprendizaje Automático I;OB;6
+2;Algoritmos de Búsqueda I;OB;6
+;;;
+;;;
+CURSO 3;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Algoritmos de Búsqueda II;OB;6
+1;Ingeniería del Software;OB;6
+1;Aprendizaje Automático II;OB;6
+1;Representación de Conocimiento y Razonamiento I;OB;6
+1;Inteligencia Ambiental y Computación Ubicua;OB;6
+2;Procesamiento de Lenguaje Natural I;OB;6
+2;Representación de Conocimiento y Razonamiento II;OB;6
+2;Visión Artificial;OB;6
+2;Robótica;OB;6
+2;Sistemas Multi-agente;OB;6
+;;;
+;;;
+;;;
+CURSO 4;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Optativa 1;OP;6
+1;Optativa 2;OP;6
+2;Optativa 3;OP;6
+2;Optativa 4;OP;6
+1;Reconocimiento Académico de Créditos;OB;6
+Anual;Trabajo Fin de Grado;OB;15
+Anual;Prácticas Externas;OB;15
+  ;;;
+;;;
+;;;
+OPTATIVAS;;;
+Semestre;Asignatura;Carácter;Créditos
+1;Interfaces de Usuario Inteligentes;OP;6
+1;Procesamiento de Lenguaje Natural II;OP;6
+1;Aprendizaje Automático III;OP;6
+1;Planificación;OP;6
+2;Algoritmos para la Toma de Decisiones;OP;6
+2;Inteligencia Artificial en Ciberseguridad;OP;6
+2;Técnicas de Organización y Control de Gestión Empresarial;OP;6
+2;Aplicaciones de la Inteligencia Artificial;OP;6

@@ -1,0 +1,51 @@
+CURSO 1;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Fundamentos físicos de la informática;FBR;6
+1;Introducción a la Ciberseguridad;OB;6
+1;Introducción a la programación;FBC;6
+1;Lógica;FBR;6
+1;Matemática discreta y algebra;FBR;6
+2;Calculo;FBR;6
+2;Criptografía;OB;6
+2;Dimensiones y modelo de la seguridad;FBC;6
+2;Estadística;FBR;6
+2;Estructuras de datos;OB;6
+;;;
+CURSO 2;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Métodos operativos y estadísticos de gestión;FBR;6
+1;Principios jurídicos básicos aplicados a la Ciberseguridad;FBC;6
+1;Programación avanzada;OB;6
+1;Técnicas de hacking;OB;6
+1;Redes de computadores;OB;6
+2;Estructura de computadores;OB;6
+2;Bases de datos;OB;6
+2;Desarrollo web seguro;OB;6
+2;Seguridad en redes;OB;6
+Anual;Idioma moderno;FBC;6
+;;;
+CURSO 3;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Arquitectura de computadores;OB;6
+1;Diseño y análisis de algoritmos;OB;6
+1;Ingeniería del software;OB;6
+1;Seguridad en bases de datos;OB;6
+1;Sistemas operativos;OB;6
+2;Inteligencia artificial;OB;3
+2;Malware y amenazas dirigidas;OB;6
+2;Metodologías de desarrollo seguro;OB;6
+2;Redes avanzadas y computación en la nube;OB;6
+2;Sistemas de información;OB;6
+2;Visión artificial aplicada a la ciberseguridad;OB;3
+;;;
+CURSO 4;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Auditoria;OB;3
+1;Inteligencia de la seguridad;OB;6
+1;Pentesting;OB;3
+1;Reconocimiento académico de créditos;OB;6
+2;Análisis y gestión del riesgo;OB;6
+2;Protección de infraestructuras criticas;OB;3
+2;Regulación y gobernanza de la seguridad;OB;3
+Anual;Practicas externas;OB;15
+Anual;Trabajo fin de grado;OB;15

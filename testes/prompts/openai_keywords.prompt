@@ -1,0 +1,3 @@
+Give me the 3 most relevant keywords (better if they are noun chunks) using a Python list structure.
+If it is not possible, then create an empty list.
+The text to analyze is the next:

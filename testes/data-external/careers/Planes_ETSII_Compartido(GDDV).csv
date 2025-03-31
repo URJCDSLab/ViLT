@@ -1,0 +1,61 @@
+CURSO 1;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Diseño digital 2D;OB;6
+1;Física para Videojuegos;FBR;6
+1;Matemática Discreta;FBR;6
+1;Narración, guión y storyboard;FBC;6
+1;Programación Visual;FBR;6
+2;Diseño digital 3D;OB;6
+2;Estructuras de datos;OB;6
+2;Fundamentos del diseño y la jugabilidad;OB;3
+2;Modelado Geométrico;FBR;6
+2;Multimedia;OB;3
+2;Principios Jurídicos básicos: Deontología Profesional e Igualdad;FBC;6
+;;;
+CURSO 2;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Dibujo artístico;OB;3
+1;Fundamentos de tecnología de videojuegos;OB;3
+1;Programación avanzada;OB;6
+1;Base de datos;OB;6
+1;Estadística;FBR;6
+1;Informática gráfica;OB;6
+2;Arquitecturas gráficas;OB;6
+2;Empresa y videojuegos;FBR;6
+2;Introducción a los métodos matemáticos y numéricos;FBR;6
+2;Proceso de desarrollo de videojuegos;OB;6
+ANUAL;Idioma Moderno;FBC;6
+;;;
+CURSO 3;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Desarrollo de juegos con inteligencia artificial;OB;6
+1;Ingeniería de videojuegos;OB;3
+1;Interacción persona-máquina y usabilidad;OB;6
+1;Juegos en Red;OB;6
+1;Lenguaje audiovisual y medios interactivos;OB;3
+1;Procesadores gráficos avanzados;OB;6
+2;Algoritmos para juegos;OB;6
+2;Entornos multijugador;OB;6
+2;Gestión de datos en medios digitales;OB;6
+2;Optativa 1;OP;6
+2;Personajes y escenarios;OB;3
+2;Sonido y música para videojuegos;OB;3
+;;;
+CURSO 4;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Comportamiento de personajes;OB;3
+1;Diseño visual y arte final;OB;3
+1;Optativa 2;OP;6
+1;Optativa 3;OP;6
+1;Optativa 4;OP;6
+1;Reconocimiento académico de créditos;OB;6
+ANUAL;Prácticas Externas;OB;15
+ANUAL;Trabajo fin de Grado;OB;15
+;;;
+OPTATIVAS;;;
+Curso / Semestre;Asignatura;Carácter;Créditos
+3 / 2; Animación 3D;OP;6
+3 / 2; Realidad Virtual;OP;6
+4 / 1; Juegos para Web y Redes Sociales;OP;6
+4 / 1; Gestión y Dirección de Proyectos;OP;6
+4 / 1; Desarrollo de aplicaciones para dispositivos móviles;OP;6

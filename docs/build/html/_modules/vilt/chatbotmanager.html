@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vilt.chatbotmanager &mdash; Virtual Learning Tutor (ViLT) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Virtual Learning Tutor (ViLT)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Virtual Learning Tutor (ViLT)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vilt.chatbotmanager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vilt.chatbotmanager</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">vilt.promptmanager</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.embeddings.fastembed</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastEmbedEmbeddings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.chains</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_retrieval_chain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.chains.combine_documents</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_stuff_documents_chain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_chroma</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chroma</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCallbackHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.outputs.llm_result</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.llms</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ollama</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">queue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Queue</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<div class="viewcode-block" id="delete_rubbish">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.delete_rubbish">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_rubbish</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deletes unnecessary files from the database directory.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db_path : str</span>
+<span class="sd">        Path to the database directory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+        <span class="n">f_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">f_file</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">f_file</span><span class="p">):</span>
+                <span class="n">p_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f_file</span><span class="p">,</span> <span class="n">i_file</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">p_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pickle&quot;</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">p_file</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="exist_embeddings">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.exist_embeddings">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">exist_embeddings</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if embeddings exist in the specified directory.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db_path : str</span>
+<span class="sd">        Path to the database directory.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    exists : bool</span>
+<span class="sd">        True if embeddings exist, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">exists</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+        <span class="n">list_files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_files</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">list_files</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.sqlite3&quot;</span><span class="p">):</span>
+                <span class="n">exists</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">exists</span></div>
+
+
+
+<div class="viewcode-block" id="Chatbot">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.Chatbot">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Chatbot</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Chatbot class that manages interactions using an LLM model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">,</span> <span class="n">use_openai</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">processed_docs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Chatbot with a prompt, career, and subject.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prompt : str</span>
+<span class="sd">            The template prompt for the chatbot.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The career the chatbot is focused on.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The subject associated with the chatbot.</span>
+<span class="sd">        use_openai : bool, optional</span>
+<span class="sd">            Whether to use OpenAI models (default is True).</span>
+<span class="sd">        processed_docs : str, optional</span>
+<span class="sd">            Path to processed documents (default is None).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">prompt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">career</span> <span class="o">=</span> <span class="n">selected_career</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">selected_subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qa_chain</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_thread</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">project_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;..&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processed_docs</span> <span class="o">=</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="s1">&#39;processed_docs&#39;</span> <span class="k">if</span> <span class="n">processed_docs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="n">processed_docs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_openai</span> <span class="o">=</span> <span class="n">use_openai</span>
+        <span class="n">load_dotenv</span><span class="p">(</span><span class="n">override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;OPENAI_API_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;OPENAI_KEY&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Chatbot.send_sse_data">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.Chatbot.send_sse_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">send_sse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles server-sent events (SSE) for streaming chatbot responses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response_thread</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">response_thread</span> <span class="ow">and</span> <span class="n">response_thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                    <span class="k">continue</span>
+
+                <span class="n">prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">prompt</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="k">else</span> <span class="n">prompt</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}</span>
+                <span class="n">callbacks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;callbacks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">StreamHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span><span class="p">)]}}</span>
+                <span class="n">response_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">qa_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">query</span><span class="p">,),</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">callbacks</span><span class="p">)</span>
+                <span class="n">response_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+                <span class="n">sse_event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s1">&#39;content&#39;</span> <span class="ow">in</span> <span class="n">sse_event</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sse_event</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">])</span>
+                <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;data: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">sse_event</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Chatbot.init_openai_llm">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.Chatbot.init_openai_llm">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_openai_llm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes an OpenAI-based language model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[])</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OpenAI failed to initialize: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Chatbot.configure_local_llm">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.Chatbot.configure_local_llm">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">configure_local_llm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Configures a local LLM using Ollama and LangChain.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        db_path : str</span>
+<span class="sd">            Path to the database containing embeddings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">delete_rubbish</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+            <span class="n">llm</span> <span class="o">=</span> <span class="n">Ollama</span><span class="p">(</span>
+                <span class="n">base_url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;URL_OLLAMA&#39;</span><span class="p">),</span>
+                <span class="n">model</span><span class="o">=</span><span class="s1">&#39;llama3.2&#39;</span><span class="p">,</span>
+                <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">mirostat_tau</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">top_k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                <span class="n">top_p</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                <span class="n">num_ctx</span><span class="o">=</span><span class="mi">4096</span>
+            <span class="p">)</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="n">FastEmbedEmbeddings</span><span class="p">()</span>
+            <span class="n">vector_store</span> <span class="o">=</span> <span class="n">Chroma</span><span class="p">(</span><span class="n">persist_directory</span><span class="o">=</span><span class="n">db_path</span><span class="p">,</span> <span class="n">embedding_function</span><span class="o">=</span><span class="n">embeddings</span><span class="p">)</span>
+            <span class="n">retriever</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span>
+                <span class="n">search_type</span><span class="o">=</span><span class="s2">&quot;similarity_score_threshold&quot;</span><span class="p">,</span>
+                <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                    <span class="s2">&quot;score_threshold&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+            <span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
+            <span class="n">document_chain</span> <span class="o">=</span> <span class="n">create_stuff_documents_chain</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qa_chain</span> <span class="o">=</span> <span class="n">create_retrieval_chain</span><span class="p">(</span><span class="n">retriever</span><span class="p">,</span> <span class="n">document_chain</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;LLM successfully initialized with langchain embeddings.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LLM failed to initialize: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Chatbot.configure_llm">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.Chatbot.configure_llm">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">configure_llm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Configures the chatbot with OpenAI LLM and vector embeddings.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        db_path : str</span>
+<span class="sd">            Path to the database containing embeddings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">delete_rubbish</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+            <span class="n">embedding</span> <span class="o">=</span> <span class="n">FastEmbedEmbeddings</span><span class="p">()</span>
+            <span class="n">vectordb</span> <span class="o">=</span> <span class="n">Chroma</span><span class="p">(</span><span class="n">persist_directory</span><span class="o">=</span><span class="n">db_path</span><span class="p">,</span> <span class="n">embedding_function</span><span class="o">=</span><span class="n">embedding</span><span class="p">)</span>
+            <span class="n">retriever</span> <span class="o">=</span> <span class="n">vectordb</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span><span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+            <span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
+            <span class="n">question_answer_chain</span> <span class="o">=</span> <span class="n">create_stuff_documents_chain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qa_chain</span> <span class="o">=</span> <span class="n">create_retrieval_chain</span><span class="p">(</span><span class="n">retriever</span><span class="p">,</span> <span class="n">question_answer_chain</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;LLM successfully initialized with langchain embeddings.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LLM failed to initialize: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Chatbot.train">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.Chatbot.train">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trains the chatbot using available embeddings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if training was successful, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">correct</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">processed_docs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">career</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exist_embeddings</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_openai</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">init_openai_llm</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">configure_llm</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">configure_local_llm</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">correct</span></div>
+</div>
+
+
+
+
+<div class="viewcode-block" id="StreamHandler">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.StreamHandler">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StreamHandler</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handles streaming events from the LLM and forwards them to the SSE event queue.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sse_event_queue</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the StreamHandler with a queue for sending SSE events.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sse_event_queue : queue.Queue</span>
+<span class="sd">            A queue used for streaming server-sent events (SSE).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span> <span class="o">=</span> <span class="n">sse_event_queue</span>
+
+<div class="viewcode-block" id="StreamHandler.on_llm_new_token">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.StreamHandler.on_llm_new_token">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_new_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles the event when a new token is generated by the LLM.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        token : str</span>
+<span class="sd">            The newly generated token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span><span class="o">.</span><span class="n">put</span><span class="p">({</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;token&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)})</span></div>
+
+
+<div class="viewcode-block" id="StreamHandler.on_llm_start">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.StreamHandler.on_llm_start">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serialized</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">prompts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles the event when the LLM starts processing a request.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        serialized : Dict[str, Any]</span>
+<span class="sd">            Serialized information about the LLM request.</span>
+<span class="sd">        prompts : List[str]</span>
+<span class="sd">            List of prompts sent to the LLM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span><span class="o">.</span><span class="n">put</span><span class="p">({</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;start&#39;</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="StreamHandler.on_llm_end">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.StreamHandler.on_llm_end">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">LLMResult</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles the event when the LLM completes processing a request.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        response : LLMResult</span>
+<span class="sd">            The result returned by the LLM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span><span class="o">.</span><span class="n">put</span><span class="p">({</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;end&#39;</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="StreamHandler.on_llm_error">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.StreamHandler.on_llm_error">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles errors that occur during LLM processing.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        error : BaseException</span>
+<span class="sd">            The exception raised during processing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sse_event_queue</span><span class="o">.</span><span class="n">put</span><span class="p">({</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)})</span></div>
+</div>
+
+
+
+
+<div class="viewcode-block" id="ChatbotManager">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.ChatbotManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ChatbotManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages multiple chatbot instances for different users and subjects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ChatbotManager with an empty chatbot dictionary and a PromptManager instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chatbots</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">promptmanager</span> <span class="o">=</span> <span class="n">PromptManager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_openai</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="ChatbotManager.add_chatbot">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.ChatbotManager.add_chatbot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_chatbot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a chatbot for a specific user, career, and subject.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The career associated with the chatbot and the user.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The subject associated with the chatbot and the user.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        correct : bool</span>
+<span class="sd">            True if the chatbot was successfully trained and added, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">promptmanager</span><span class="o">.</span><span class="n">prompts</span><span class="p">[</span><span class="s1">&#39;openai_explicative&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_openai</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">promptmanager</span><span class="o">.</span><span class="n">prompts</span><span class="p">[</span><span class="s1">&#39;local_explicative&#39;</span><span class="p">]</span>
+        <span class="n">chat_bot</span> <span class="o">=</span> <span class="n">Chatbot</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_openai</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">=</span> <span class="n">chat_bot</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">correct</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">email</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chatbots</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chatbots</span><span class="p">[</span><span class="n">email</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chatbots</span><span class="p">[</span><span class="n">email</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chat_bot</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">correct</span></div>
+
+
+<div class="viewcode-block" id="ChatbotManager.find_chatbot">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.ChatbotManager.find_chatbot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_chatbot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">selected_career</span><span class="p">,</span> <span class="n">selected_subject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds the position of a chatbot for a specific user, career, and subject.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email of the user.</span>
+<span class="sd">        selected_career : str</span>
+<span class="sd">            The career associated with the chatbot and the user.</span>
+<span class="sd">        selected_subject : str</span>
+<span class="sd">            The subject associated with the chatbot and the user.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pos : int</span>
+<span class="sd">            The index of the chatbot in the user&#39;s list, or -1 if not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">email</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chatbots</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">chatbots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chatbots</span><span class="p">[</span><span class="n">email</span><span class="p">]</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">chatbots</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">found</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">chatbots</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">career</span> <span class="o">==</span> <span class="n">selected_career</span> <span class="ow">and</span> <span class="n">chatbots</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="n">selected_subject</span><span class="p">:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">pos</span></div>
+
+
+<div class="viewcode-block" id="ChatbotManager.remove_chatbot">
+<a class="viewcode-back" href="../../vilt.html#vilt.chatbotmanager.ChatbotManager.remove_chatbot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_chatbot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a chatbot for a specific user based on its position in the list.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        email : str</span>
+<span class="sd">            The email of the user.</span>
+<span class="sd">        pos : int</span>
+<span class="sd">            The index of the chatbot to remove.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chatbots</span><span class="p">[</span><span class="n">email</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alberto Fernández Isabel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

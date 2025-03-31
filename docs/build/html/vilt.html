@@ -1,0 +1,2100 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vilt package &mdash; Virtual Learning Tutor (ViLT) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="project" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Virtual Learning Tutor (ViLT)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">project</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">vilt package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.app">vilt.app module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.app.clean_all_chatbots"><code class="docutils literal notranslate"><span class="pre">clean_all_chatbots()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.app.clean_chatbot"><code class="docutils literal notranslate"><span class="pre">clean_chatbot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.app.clean_chatbots_by_student"><code class="docutils literal notranslate"><span class="pre">clean_chatbots_by_student()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.app.kill_handler"><code class="docutils literal notranslate"><span class="pre">kill_handler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.careermanager">vilt.careermanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.careermanager.CareersManager"><code class="docutils literal notranslate"><span class="pre">CareersManager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.chatbotmanager">vilt.chatbotmanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.chatbotmanager.Chatbot"><code class="docutils literal notranslate"><span class="pre">Chatbot</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.chatbotmanager.ChatbotManager"><code class="docutils literal notranslate"><span class="pre">ChatbotManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.chatbotmanager.StreamHandler"><code class="docutils literal notranslate"><span class="pre">StreamHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.chatbotmanager.delete_rubbish"><code class="docutils literal notranslate"><span class="pre">delete_rubbish()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.chatbotmanager.exist_embeddings"><code class="docutils literal notranslate"><span class="pre">exist_embeddings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.dashmanager">vilt.dashmanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.create_conversations_indicator"><code class="docutils literal notranslate"><span class="pre">create_conversations_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.create_feedback_indicator"><code class="docutils literal notranslate"><span class="pre">create_feedback_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.create_layout"><code class="docutils literal notranslate"><span class="pre">create_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.find_keyword"><code class="docutils literal notranslate"><span class="pre">find_keyword()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.generate_cloud_plot"><code class="docutils literal notranslate"><span class="pre">generate_cloud_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.generate_conversations_indicators"><code class="docutils literal notranslate"><span class="pre">generate_conversations_indicators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.generate_conversations_plot"><code class="docutils literal notranslate"><span class="pre">generate_conversations_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.generate_data_students_radar_plot"><code class="docutils literal notranslate"><span class="pre">generate_data_students_radar_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.generate_feedback_indicators"><code class="docutils literal notranslate"><span class="pre">generate_feedback_indicators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.generate_radar_plot"><code class="docutils literal notranslate"><span class="pre">generate_radar_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.generate_total_time_plot"><code class="docutils literal notranslate"><span class="pre">generate_total_time_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_conversation_indicator"><code class="docutils literal notranslate"><span class="pre">get_conversation_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_info_from_student"><code class="docutils literal notranslate"><span class="pre">get_info_from_student()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_info_from_students"><code class="docutils literal notranslate"><span class="pre">get_info_from_students()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_learning_feedback_indicator"><code class="docutils literal notranslate"><span class="pre">get_learning_feedback_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_mean_conversation_indicator"><code class="docutils literal notranslate"><span class="pre">get_mean_conversation_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_mean_feedback_indicator"><code class="docutils literal notranslate"><span class="pre">get_mean_feedback_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_mean_size_conversations_indicator"><code class="docutils literal notranslate"><span class="pre">get_mean_size_conversations_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_mean_time_indicator"><code class="docutils literal notranslate"><span class="pre">get_mean_time_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_precision_feedback_indicator"><code class="docutils literal notranslate"><span class="pre">get_precision_feedback_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_student_conversations_indicator"><code class="docutils literal notranslate"><span class="pre">get_student_conversations_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_student_selection"><code class="docutils literal notranslate"><span class="pre">get_student_selection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_students_feedback_indicator"><code class="docutils literal notranslate"><span class="pre">get_students_feedback_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_students_options"><code class="docutils literal notranslate"><span class="pre">get_students_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_subject_options"><code class="docutils literal notranslate"><span class="pre">get_subject_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_utility_feedback_indicator"><code class="docutils literal notranslate"><span class="pre">get_utility_feedback_indicator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.get_value_feedback"><code class="docutils literal notranslate"><span class="pre">get_value_feedback()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.update_figures"><code class="docutils literal notranslate"><span class="pre">update_figures()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.dashmanager.update_indicators"><code class="docutils literal notranslate"><span class="pre">update_indicators()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.databasemanager">vilt.databasemanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.databasemanager.DBManager"><code class="docutils literal notranslate"><span class="pre">DBManager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.docmanager">vilt.docmanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.docmanager.DocManager"><code class="docutils literal notranslate"><span class="pre">DocManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.docmanager.create_dir"><code class="docutils literal notranslate"><span class="pre">create_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.docmanager.create_password"><code class="docutils literal notranslate"><span class="pre">create_password()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.docmanager.process_students_excel"><code class="docutils literal notranslate"><span class="pre">process_students_excel()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.embeddingmanager">vilt.embeddingmanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.embeddingmanager.EmbeddingManager"><code class="docutils literal notranslate"><span class="pre">EmbeddingManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.embeddingmanager.create_json_files"><code class="docutils literal notranslate"><span class="pre">create_json_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.embeddingmanager.create_vector_db"><code class="docutils literal notranslate"><span class="pre">create_vector_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.embeddingmanager.create_vectors"><code class="docutils literal notranslate"><span class="pre">create_vectors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.embeddingmanager.delete_but_pdfs"><code class="docutils literal notranslate"><span class="pre">delete_but_pdfs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.embeddingmanager.parse_pdf_to_json"><code class="docutils literal notranslate"><span class="pre">parse_pdf_to_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.embeddings_creation">vilt.embeddings_creation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.embeddings_deletion">vilt.embeddings_deletion module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.infomanager">vilt.infomanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.infomanager.Conversation"><code class="docutils literal notranslate"><span class="pre">Conversation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.infomanager.GlobalInfoSubject"><code class="docutils literal notranslate"><span class="pre">GlobalInfoSubject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.infomanager.InfoSubject"><code class="docutils literal notranslate"><span class="pre">InfoSubject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.infomanager.InfoValues"><code class="docutils literal notranslate"><span class="pre">InfoValues</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.infomanager.get_career_subject_from_string"><code class="docutils literal notranslate"><span class="pre">get_career_subject_from_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.infomanager.get_string_from_career_subject"><code class="docutils literal notranslate"><span class="pre">get_string_from_career_subject()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.infomanager.update_subject_keywords"><code class="docutils literal notranslate"><span class="pre">update_subject_keywords()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.infomanager.update_subject_parameters"><code class="docutils literal notranslate"><span class="pre">update_subject_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.keywordsmanager">vilt.keywordsmanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.keywordsmanager.KeywordsManager"><code class="docutils literal notranslate"><span class="pre">KeywordsManager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.promptmanager">vilt.promptmanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.promptmanager.PromptManager"><code class="docutils literal notranslate"><span class="pre">PromptManager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.timemanager">vilt.timemanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.timemanager.ProcessTimer"><code class="docutils literal notranslate"><span class="pre">ProcessTimer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.timemanager.TimeManager"><code class="docutils literal notranslate"><span class="pre">TimeManager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt.usermanager">vilt.usermanager module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.usermanager.HistoryUserManager"><code class="docutils literal notranslate"><span class="pre">HistoryUserManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.usermanager.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.usermanager.UserManager"><code class="docutils literal notranslate"><span class="pre">UserManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vilt.usermanager.to_json"><code class="docutils literal notranslate"><span class="pre">to_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-vilt">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Virtual Learning Tutor (ViLT)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">project</a></li>
+      <li class="breadcrumb-item active">vilt package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/vilt.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vilt-package">
+<h1>vilt package<a class="headerlink" href="#vilt-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-vilt.app">
+<span id="vilt-app-module"></span><h2>vilt.app module<a class="headerlink" href="#module-vilt.app" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.app.clean_all_chatbots">
+<span class="sig-prename descclassname"><span class="pre">vilt.app.</span></span><span class="sig-name descname"><span class="pre">clean_all_chatbots</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/app.html#clean_all_chatbots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.app.clean_all_chatbots" title="Link to this definition"></a></dt>
+<dd><p>Cleans up all chatbot instances for all students in the system.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.app.clean_chatbot">
+<span class="sig-prename descclassname"><span class="pre">vilt.app.</span></span><span class="sig-name descname"><span class="pre">clean_chatbot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/app.html#clean_chatbot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.app.clean_chatbot" title="Link to this definition"></a></dt>
+<dd><p>Cleans up a chatbot instance for a specific user and subject.</p>
+<p>If a conversation is active, it is ended before removing the chatbot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The career associated with the chatbot and the user.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The subject associated with the chatbot and the user.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.app.clean_chatbots_by_student">
+<span class="sig-prename descclassname"><span class="pre">vilt.app.</span></span><span class="sig-name descname"><span class="pre">clean_chatbots_by_student</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/app.html#clean_chatbots_by_student"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.app.clean_chatbots_by_student" title="Link to this definition"></a></dt>
+<dd><p>Cleans up all chatbot instances associated with a specific student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>student</strong> (<em>dict</em>) – Dictionary containing student information, including email and enrolled subjects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.app.kill_handler">
+<span class="sig-prename descclassname"><span class="pre">vilt.app.</span></span><span class="sig-name descname"><span class="pre">kill_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/app.html#kill_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.app.kill_handler" title="Link to this definition"></a></dt>
+<dd><p>Handles system termination by cleaning up chatbots and stopping processes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*args</strong> (<em>Python object</em>) – Additional arguments passed by the system signal handler.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vilt.careermanager">
+<span id="vilt-careermanager-module"></span><h2>vilt.careermanager module<a class="headerlink" href="#module-vilt.careermanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.careermanager.CareersManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.careermanager.</span></span><span class="sig-name descname"><span class="pre">CareersManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_careers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_docs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/careermanager.html#CareersManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.careermanager.CareersManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages career and subject data stored in a database, allowing insertion, deletion, and querying.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.careermanager.CareersManager.delete_careers">
+<span class="sig-name descname"><span class="pre">delete_careers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/careermanager.html#CareersManager.delete_careers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.careermanager.CareersManager.delete_careers" title="Link to this definition"></a></dt>
+<dd><p>Deletes all career records from the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.careermanager.CareersManager.process_from_csv">
+<span class="sig-name descname"><span class="pre">process_from_csv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/careermanager.html#CareersManager.process_from_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.careermanager.CareersManager.process_from_csv" title="Link to this definition"></a></dt>
+<dd><p>Processes all CSV files in the document path and stores career data in the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.careermanager.CareersManager.query_careers">
+<span class="sig-name descname"><span class="pre">query_careers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/careermanager.html#CareersManager.query_careers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.careermanager.CareersManager.query_careers" title="Link to this definition"></a></dt>
+<dd><p>Retrieves all career records from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of career documents from the database.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.careermanager.CareersManager.query_subjects">
+<span class="sig-name descname"><span class="pre">query_subjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">career</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/careermanager.html#CareersManager.query_subjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.careermanager.CareersManager.query_subjects" title="Link to this definition"></a></dt>
+<dd><p>Retrieves all subjects associated with a given career.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>career</strong> (<em>str</em>) – The name of the career to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of subjects related to the specified career.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.careermanager.CareersManager.store_careers">
+<span class="sig-name descname"><span class="pre">store_careers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_docs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/careermanager.html#CareersManager.store_careers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.careermanager.CareersManager.store_careers" title="Link to this definition"></a></dt>
+<dd><p>Reads career data from CSV files and stores it in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list_docs</strong> (<em>list</em>) – List of CSV filenames containing career and subject data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-vilt.chatbotmanager">
+<span id="vilt-chatbotmanager-module"></span><h2>vilt.chatbotmanager module<a class="headerlink" href="#module-vilt.chatbotmanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.Chatbot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.chatbotmanager.</span></span><span class="sig-name descname"><span class="pre">Chatbot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_openai</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processed_docs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#Chatbot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.Chatbot" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Chatbot class that manages interactions using an LLM model.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.Chatbot.configure_llm">
+<span class="sig-name descname"><span class="pre">configure_llm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#Chatbot.configure_llm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.Chatbot.configure_llm" title="Link to this definition"></a></dt>
+<dd><p>Configures the chatbot with OpenAI LLM and vector embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_path</strong> (<em>str</em>) – Path to the database containing embeddings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.Chatbot.configure_local_llm">
+<span class="sig-name descname"><span class="pre">configure_local_llm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#Chatbot.configure_local_llm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.Chatbot.configure_local_llm" title="Link to this definition"></a></dt>
+<dd><p>Configures a local LLM using Ollama and LangChain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_path</strong> (<em>str</em>) – Path to the database containing embeddings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.Chatbot.init_openai_llm">
+<span class="sig-name descname"><span class="pre">init_openai_llm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#Chatbot.init_openai_llm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.Chatbot.init_openai_llm" title="Link to this definition"></a></dt>
+<dd><p>Initializes an OpenAI-based language model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.Chatbot.send_sse_data">
+<span class="sig-name descname"><span class="pre">send_sse_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#Chatbot.send_sse_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.Chatbot.send_sse_data" title="Link to this definition"></a></dt>
+<dd><p>Handles server-sent events (SSE) for streaming chatbot responses.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.Chatbot.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#Chatbot.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.Chatbot.train" title="Link to this definition"></a></dt>
+<dd><p>Trains the chatbot using available embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if training was successful, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.ChatbotManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.chatbotmanager.</span></span><span class="sig-name descname"><span class="pre">ChatbotManager</span></span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#ChatbotManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.ChatbotManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages multiple chatbot instances for different users and subjects.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.ChatbotManager.add_chatbot">
+<span class="sig-name descname"><span class="pre">add_chatbot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#ChatbotManager.add_chatbot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.ChatbotManager.add_chatbot" title="Link to this definition"></a></dt>
+<dd><p>Adds a chatbot for a specific user, career, and subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The career associated with the chatbot and the user.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The subject associated with the chatbot and the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>correct</strong> – True if the chatbot was successfully trained and added, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.ChatbotManager.find_chatbot">
+<span class="sig-name descname"><span class="pre">find_chatbot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#ChatbotManager.find_chatbot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.ChatbotManager.find_chatbot" title="Link to this definition"></a></dt>
+<dd><p>Finds the position of a chatbot for a specific user, career, and subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The career associated with the chatbot and the user.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The subject associated with the chatbot and the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – The index of the chatbot in the user’s list, or -1 if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.ChatbotManager.remove_chatbot">
+<span class="sig-name descname"><span class="pre">remove_chatbot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#ChatbotManager.remove_chatbot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.ChatbotManager.remove_chatbot" title="Link to this definition"></a></dt>
+<dd><p>Removes a chatbot for a specific user based on its position in the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email of the user.</p></li>
+<li><p><strong>pos</strong> (<em>int</em>) – The index of the chatbot to remove.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.StreamHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.chatbotmanager.</span></span><span class="sig-name descname"><span class="pre">StreamHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sse_event_queue</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#StreamHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.StreamHandler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCallbackHandler</span></code></p>
+<p>Handles streaming events from the LLM and forwards them to the SSE event queue.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.StreamHandler.on_llm_end">
+<span class="sig-name descname"><span class="pre">on_llm_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LLMResult</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#StreamHandler.on_llm_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.StreamHandler.on_llm_end" title="Link to this definition"></a></dt>
+<dd><p>Handles the event when the LLM completes processing a request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<em>LLMResult</em>) – The result returned by the LLM.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.StreamHandler.on_llm_error">
+<span class="sig-name descname"><span class="pre">on_llm_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseException</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#StreamHandler.on_llm_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.StreamHandler.on_llm_error" title="Link to this definition"></a></dt>
+<dd><p>Handles errors that occur during LLM processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error</strong> (<em>BaseException</em>) – The exception raised during processing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.StreamHandler.on_llm_new_token">
+<span class="sig-name descname"><span class="pre">on_llm_new_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#StreamHandler.on_llm_new_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.StreamHandler.on_llm_new_token" title="Link to this definition"></a></dt>
+<dd><p>Handles the event when a new token is generated by the LLM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>token</strong> (<em>str</em>) – The newly generated token.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.StreamHandler.on_llm_start">
+<span class="sig-name descname"><span class="pre">on_llm_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serialized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#StreamHandler.on_llm_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.StreamHandler.on_llm_start" title="Link to this definition"></a></dt>
+<dd><p>Handles the event when the LLM starts processing a request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>serialized</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Serialized information about the LLM request.</p></li>
+<li><p><strong>prompts</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of prompts sent to the LLM.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.delete_rubbish">
+<span class="sig-prename descclassname"><span class="pre">vilt.chatbotmanager.</span></span><span class="sig-name descname"><span class="pre">delete_rubbish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#delete_rubbish"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.delete_rubbish" title="Link to this definition"></a></dt>
+<dd><p>Deletes unnecessary files from the database directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_path</strong> (<em>str</em>) – Path to the database directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.chatbotmanager.exist_embeddings">
+<span class="sig-prename descclassname"><span class="pre">vilt.chatbotmanager.</span></span><span class="sig-name descname"><span class="pre">exist_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/chatbotmanager.html#exist_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.chatbotmanager.exist_embeddings" title="Link to this definition"></a></dt>
+<dd><p>Checks if embeddings exist in the specified directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_path</strong> (<em>str</em>) – Path to the database directory.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>exists</strong> – True if embeddings exist, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vilt.dashmanager">
+<span id="vilt-dashmanager-module"></span><h2>vilt.dashmanager module<a class="headerlink" href="#module-vilt.dashmanager" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.create_conversations_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">create_conversations_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#create_conversations_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.create_conversations_indicator" title="Link to this definition"></a></dt>
+<dd><p>Creates a Plotly indicator graph for conversations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>int</em><em> or </em><em>float</em>) – The numerical value to display in the indicator.</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – The title of the indicator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Plotly figure representing the indicator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>go.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.create_feedback_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">create_feedback_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radio_value_trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#create_feedback_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.create_feedback_indicator" title="Link to this definition"></a></dt>
+<dd><p>Creates a Plotly gauge indicator for feedback metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>radio_value_trace</strong> (<em>float</em>) – The value to be displayed in the gauge.</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – The title of the indicator.</p></li>
+<li><p><strong>max_value</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum value of the gauge (default is 10).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Plotly figure representing the gauge indicator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>go.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.create_layout">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">create_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'--'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#create_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.create_layout" title="Link to this definition"></a></dt>
+<dd><p>Creates the main dashboard layout with various filters, graphs, and indicators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em><em>, </em><em>optional</em>) – The user’s email address (default is an empty string).</p></li>
+<li><p><strong>subject</strong> (<em>str</em><em>, </em><em>optional</em>) – The selected subject to filter the dashboard (default is ‘–‘).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>layout</strong> – The structured layout for the dashboard.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dash.html.Div</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.find_keyword">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">find_keyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keywords_by_student</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#find_keyword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.find_keyword" title="Link to this definition"></a></dt>
+<dd><p>Finds the index of a keyword in a list of keyword-frequency pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyword</strong> (<em>str</em>) – The keyword to search for.</p></li>
+<li><p><strong>keywords_by_student</strong> (<em>list</em>) – A list of keyword-frequency pairs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – The index of the keyword, or -1 if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.generate_cloud_plot">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">generate_cloud_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#generate_cloud_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.generate_cloud_plot" title="Link to this definition"></a></dt>
+<dd><p>Generates a word cloud from frequently used keywords.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing keyword frequency data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list representing word cloud data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.generate_conversations_indicators">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">generate_conversations_indicators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#generate_conversations_indicators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.generate_conversations_indicators" title="Link to this definition"></a></dt>
+<dd><p>Generates indicators related to conversations, including counts and average sizes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing conversation statistics.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A set of conversation-related indicators.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.generate_conversations_plot">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">generate_conversations_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#generate_conversations_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.generate_conversations_plot" title="Link to this definition"></a></dt>
+<dd><p>Generates a bar chart for conversation statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing conversation metrics.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Plotly figure representing the conversations bar chart.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>go.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.generate_data_students_radar_plot">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">generate_data_students_radar_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#generate_data_students_radar_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.generate_data_students_radar_plot" title="Link to this definition"></a></dt>
+<dd><p>Processes student data for visualization in a radar plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing student performance data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed data structured for radar plot visualization.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.generate_feedback_indicators">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">generate_feedback_indicators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#generate_feedback_indicators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.generate_feedback_indicators" title="Link to this definition"></a></dt>
+<dd><p>Generates feedback indicators based on student feedback data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing feedback metrics.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A set of feedback indicators including precision, utility, learning, mean feedback, and student feedback.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.generate_radar_plot">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">generate_radar_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#generate_radar_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.generate_radar_plot" title="Link to this definition"></a></dt>
+<dd><p>Generates a radar chart to visualize multiple metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing student performance data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Plotly figure representing the radar chart.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>go.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.generate_total_time_plot">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">generate_total_time_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#generate_total_time_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.generate_total_time_plot" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot showing total conversation time per student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing time spent by students.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Plotly figure visualizing the total time spent in conversations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>go.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_conversation_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_conversation_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_conversation_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_conversation_indicator" title="Link to this definition"></a></dt>
+<dd><p>Computes an indicator based on the number of conversations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing conversation count data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The conversation indicator value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_info_from_student">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_info_from_student</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_info_from_student"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_info_from_student" title="Link to this definition"></a></dt>
+<dd><p>Retrieves stored student information for a given career and subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email of the student.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The career associated with the student.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The subject associated with the student.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The student’s stored information if found, otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#vilt.infomanager.InfoValues" title="vilt.infomanager.InfoValues">InfoValues</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_info_from_students">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_info_from_students</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected_students</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_info_from_students"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_info_from_students" title="Link to this definition"></a></dt>
+<dd><p>Retrieves information for multiple students and structures it in a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>selected_students</strong> (<em>list</em>) – List of student emails.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The career associated with the students.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The subject associated with the students.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing structured student information.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_learning_feedback_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_learning_feedback_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_learning_feedback_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_learning_feedback_indicator" title="Link to this definition"></a></dt>
+<dd><p>Extracts the learning feedback indicator from student feedback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing student feedback information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The learning feedback score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_mean_conversation_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_mean_conversation_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_mean_conversation_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_mean_conversation_indicator" title="Link to this definition"></a></dt>
+<dd><p>Computes the mean number of conversations per student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing conversation data per student.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mean conversation count per student.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_mean_feedback_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_mean_feedback_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_mean_feedback_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_mean_feedback_indicator" title="Link to this definition"></a></dt>
+<dd><p>Computes the mean feedback indicator across all students.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing student feedback information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mean feedback score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_mean_size_conversations_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_mean_size_conversations_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_mean_size_conversations_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_mean_size_conversations_indicator" title="Link to this definition"></a></dt>
+<dd><p>Computes the average conversation length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing conversation size metrics.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mean conversation size.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_mean_time_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_mean_time_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_mean_time_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_mean_time_indicator" title="Link to this definition"></a></dt>
+<dd><p>Computes the average conversation time per student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing conversation time metrics.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mean time spent in conversations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_precision_feedback_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_precision_feedback_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_precision_feedback_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_precision_feedback_indicator" title="Link to this definition"></a></dt>
+<dd><p>Extracts the precision feedback indicator from student feedback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing student feedback information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The precision feedback score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_student_conversations_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_student_conversations_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_student_conversations_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_student_conversations_indicator" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the number of conversations per student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing conversation data per student.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of conversation counts per student.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_student_selection">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_student_selection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected_students</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_student_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_student_selection" title="Link to this definition"></a></dt>
+<dd><p>Ensures the student selection includes ‘–’ as an option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>selected_students</strong> (<em>list</em><em> or </em><em>str</em>) – The currently selected students.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>selected_students</strong> – The modified selection with ‘–’ included.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_students_feedback_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_students_feedback_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_students_feedback_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_students_feedback_indicator" title="Link to this definition"></a></dt>
+<dd><p>Retrieves feedback indicators for individual students.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing student feedback information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of feedback scores per student.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_students_options">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_students_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected_career</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_students_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_students_options" title="Link to this definition"></a></dt>
+<dd><p>Retrieves a list of student emails for a given career and subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>selected_career</strong> (<em>str</em><em>, </em><em>optional</em>) – The career to filter students.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em><em>, </em><em>optional</em>) – The subject to filter students.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>students_in_career</strong> – A list of student emails, including ‘–’ as a default option.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_subject_options">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_subject_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_subject_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_subject_options" title="Link to this definition"></a></dt>
+<dd><p>Retrieves a list of subjects assigned to a specific user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The user’s email address.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>subject_options</strong> – A list of subjects formatted as ‘(career) subject’.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_utility_feedback_indicator">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_utility_feedback_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_utility_feedback_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_utility_feedback_indicator" title="Link to this definition"></a></dt>
+<dd><p>Extracts the utility feedback indicator from student feedback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing student feedback information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The utility feedback score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.get_value_feedback">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">get_value_feedback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feedback_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#get_value_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.get_value_feedback" title="Link to this definition"></a></dt>
+<dd><p>Extracts a specific feedback value from the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feedback_type</strong> (<em>str</em>) – Type of feedback to evaluate.</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – Dictionary containing feedback data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The extracted feedback value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.update_figures">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">update_figures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time_plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conversations_plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radar_plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cloud_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#update_figures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.update_figures" title="Link to this definition"></a></dt>
+<dd><p>Updates the dashboard figures based on response data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> (<em>TestResponse object</em>) – The response object containing the updated data.</p></li>
+<li><p><strong>total_time_plot</strong> (<em>any</em>) – Placeholder for total time plot.</p></li>
+<li><p><strong>conversations_plot</strong> (<em>any</em>) – Placeholder for conversations plot.</p></li>
+<li><p><strong>radar_plot</strong> (<em>any</em>) – Placeholder for radar chart.</p></li>
+<li><p><strong>cloud_list</strong> (<em>any</em>) – Placeholder for word cloud data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated values for all figures.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.dashmanager.update_indicators">
+<span class="sig-prename descclassname"><span class="pre">vilt.dashmanager.</span></span><span class="sig-name descname"><span class="pre">update_indicators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_time_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conversations_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_conversations_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_size_conversations_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">student_conversations_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision_feedback_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utility_feedback_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_feedback_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_feedback_indicator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">students_feedback_indicator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/dashmanager.html#update_indicators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.dashmanager.update_indicators" title="Link to this definition"></a></dt>
+<dd><p>Updates the dashboard indicators based on response data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> (<em>TestResponse object</em>) – The response object containing the updated data.</p></li>
+<li><p><strong>mean_time_indicator</strong> (<em>any</em>) – Placeholder for mean conversation time indicator.</p></li>
+<li><p><strong>conversations_indicator</strong> (<em>any</em>) – Placeholder for total conversations indicator.</p></li>
+<li><p><strong>mean_conversations_indicator</strong> (<em>any</em>) – Placeholder for average conversations per student indicator.</p></li>
+<li><p><strong>mean_size_conversations_indicator</strong> (<em>any</em>) – Placeholder for average conversation size indicator.</p></li>
+<li><p><strong>student_conversations_indicator</strong> (<em>any</em>) – Placeholder for student-specific conversations indicator.</p></li>
+<li><p><strong>precision_feedback_indicator</strong> (<em>any</em>) – Placeholder for precision feedback indicator.</p></li>
+<li><p><strong>utility_feedback_indicator</strong> (<em>any</em>) – Placeholder for utility feedback indicator.</p></li>
+<li><p><strong>learning_feedback_indicator</strong> (<em>any</em>) – Placeholder for learning feedback indicator.</p></li>
+<li><p><strong>mean_feedback_indicator</strong> (<em>any</em>) – Placeholder for overall feedback indicator.</p></li>
+<li><p><strong>students_feedback_indicator</strong> (<em>any</em>) – Placeholder for student feedback summary.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated values for all indicators.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vilt.databasemanager">
+<span id="vilt-databasemanager-module"></span><h2>vilt.databasemanager module<a class="headerlink" href="#module-vilt.databasemanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.databasemanager.</span></span><span class="sig-name descname"><span class="pre">DBManager</span></span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages database operations such as connecting, inserting, deleting, and querying data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.collection_exists">
+<span class="sig-name descname"><span class="pre">collection_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.collection_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.collection_exists" title="Link to this definition"></a></dt>
+<dd><p>Checks if a specific collection exists in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the collection exists, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.connect_database">
+<span class="sig-name descname"><span class="pre">connect_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mongo_db</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.connect_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.connect_database" title="Link to this definition"></a></dt>
+<dd><p>Connects to the specified MongoDB database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mongo_db</strong> (<em>str</em>) – The name of the database to connect to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.create_collection">
+<span class="sig-name descname"><span class="pre">create_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.create_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.create_collection" title="Link to this definition"></a></dt>
+<dd><p>Creates a new collection in the database if it does not already exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection to create.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>created</strong> – True if the collection was created, False if it already exists.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.delete_collection">
+<span class="sig-name descname"><span class="pre">delete_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.delete_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.delete_collection" title="Link to this definition"></a></dt>
+<dd><p>Deletes a collection from the database if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection to delete.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.delete_entity">
+<span class="sig-name descname"><span class="pre">delete_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.delete_entity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.delete_entity" title="Link to this definition"></a></dt>
+<dd><p>Deletes documents from a collection based on a condition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection from which documents will be deleted.</p></li>
+<li><p><strong>condition</strong> (<em>dict</em>) – The condition to match documents for deletion.</p></li>
+<li><p><strong>total</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, deletes all matching documents; if False, deletes only the first match (default is False).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.disconnect_database">
+<span class="sig-name descname"><span class="pre">disconnect_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.disconnect_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.disconnect_database" title="Link to this definition"></a></dt>
+<dd><p>Closes the database connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.insert_into_database">
+<span class="sig-name descname"><span class="pre">insert_into_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.insert_into_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.insert_into_database" title="Link to this definition"></a></dt>
+<dd><p>Inserts a document into the specified collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection where the document will be inserted.</p></li>
+<li><p><strong>info</strong> (<em>dict</em>) – The document to insert.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.query_database">
+<span class="sig-name descname"><span class="pre">query_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.query_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.query_database" title="Link to this definition"></a></dt>
+<dd><p>Queries documents from a specified collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection to query.</p></li>
+<li><p><strong>condition</strong> (<em>dict</em><em>, </em><em>optional</em>) – The query condition to filter documents (default is None, which retrieves all documents).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of documents that match the query condition.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.databasemanager.DBManager.update_collection">
+<span class="sig-name descname"><span class="pre">update_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updating</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">many</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/databasemanager.html#DBManager.update_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.databasemanager.DBManager.update_collection" title="Link to this definition"></a></dt>
+<dd><p>Updates documents in a specified collection based on a query condition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection where documents will be updated.</p></li>
+<li><p><strong>query</strong> (<em>dict</em>) – The query condition to match documents.</p></li>
+<li><p><strong>updating</strong> (<em>dict</em>) – The update operation to apply.</p></li>
+<li><p><strong>many</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, updates all matching documents; if False, updates only the first match (default is True).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the update was performed successfully, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-vilt.docmanager">
+<span id="vilt-docmanager-module"></span><h2>vilt.docmanager module<a class="headerlink" href="#module-vilt.docmanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.docmanager.DocManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.docmanager.</span></span><span class="sig-name descname"><span class="pre">DocManager</span></span><a class="reference internal" href="_modules/vilt/docmanager.html#DocManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.docmanager.DocManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages document processing, including creating directories for different careers and subjects.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.docmanager.DocManager.create_new_career_dir">
+<span class="sig-name descname"><span class="pre">create_new_career_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/docmanager.html#DocManager.create_new_career_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.docmanager.DocManager.create_new_career_dir" title="Link to this definition"></a></dt>
+<dd><p>Creates a directory structure for a specific career and subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>career</strong> (<em>str</em>) – The name of the career.</p></li>
+<li><p><strong>subject</strong> (<em>str</em>) – The name of the subject.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>new_dir</strong> – The path to the newly created directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.docmanager.create_dir">
+<span class="sig-prename descclassname"><span class="pre">vilt.docmanager.</span></span><span class="sig-name descname"><span class="pre">create_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">existing_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/docmanager.html#create_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.docmanager.create_dir" title="Link to this definition"></a></dt>
+<dd><p>Creates a new directory by concatenating a subdirectory to an existing directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>existing_dir</strong> (<em>str</em>) – The base directory where the new directory will be created.</p></li>
+<li><p><strong>concat</strong> (<em>str</em>) – The name of the new subdirectory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>new_dir</strong> – The path of the newly created or existing directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.docmanager.create_password">
+<span class="sig-prename descclassname"><span class="pre">vilt.docmanager.</span></span><span class="sig-name descname"><span class="pre">create_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/docmanager.html#create_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.docmanager.create_password" title="Link to this definition"></a></dt>
+<dd><p>Generates a password using the first four characters of the document ID and email.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_doc</strong> (<em>str</em>) – The user’s document ID.</p></li>
+<li><p><strong>email</strong> (<em>str</em>) – The user’s email address.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>password</strong> – The generated password.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.docmanager.process_students_excel">
+<span class="sig-prename descclassname"><span class="pre">vilt.docmanager.</span></span><span class="sig-name descname"><span class="pre">process_students_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/docmanager.html#process_students_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.docmanager.process_students_excel" title="Link to this definition"></a></dt>
+<dd><p>Processes an Excel file containing student information and assigns them to a subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>File</em>) – The Excel file containing student data.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The career associated with the students.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The subject to assign to the students.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vilt.embeddingmanager">
+<span id="vilt-embeddingmanager-module"></span><h2>vilt.embeddingmanager module<a class="headerlink" href="#module-vilt.embeddingmanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.embeddingmanager.EmbeddingManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.embeddingmanager.</span></span><span class="sig-name descname"><span class="pre">EmbeddingManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_docs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/embeddingmanager.html#EmbeddingManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.embeddingmanager.EmbeddingManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages embedding generation and subject directory retrieval.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.embeddingmanager.EmbeddingManager.generate_embeddings">
+<span class="sig-name descname"><span class="pre">generate_embeddings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/embeddingmanager.html#EmbeddingManager.generate_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.embeddingmanager.EmbeddingManager.generate_embeddings" title="Link to this definition"></a></dt>
+<dd><p>Generates embeddings for all subject directories, removing non-PDF files before processing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.embeddingmanager.EmbeddingManager.get_subject_dirs">
+<span class="sig-name descname"><span class="pre">get_subject_dirs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/embeddingmanager.html#EmbeddingManager.get_subject_dirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.embeddingmanager.EmbeddingManager.get_subject_dirs" title="Link to this definition"></a></dt>
+<dd><p>Retrieves subject directories from the processed documents folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of valid subject directories.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.embeddingmanager.create_json_files">
+<span class="sig-prename descclassname"><span class="pre">vilt.embeddingmanager.</span></span><span class="sig-name descname"><span class="pre">create_json_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/embeddingmanager.html#create_json_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.embeddingmanager.create_json_files" title="Link to this definition"></a></dt>
+<dd><p>Converts all PDF files in the specified directory to JSON format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_path</strong> (<em>str</em>) – Path to the directory containing PDF files.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if at least one PDF was converted, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.embeddingmanager.create_vector_db">
+<span class="sig-prename descclassname"><span class="pre">vilt.embeddingmanager.</span></span><span class="sig-name descname"><span class="pre">create_vector_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/embeddingmanager.html#create_vector_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.embeddingmanager.create_vector_db" title="Link to this definition"></a></dt>
+<dd><p>Generates vector embeddings from JSON files in the specified directory and stores them in a database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>db_path</strong> (<em>str</em>) – Path to the directory containing JSON documents.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.embeddingmanager.create_vectors">
+<span class="sig-prename descclassname"><span class="pre">vilt.embeddingmanager.</span></span><span class="sig-name descname"><span class="pre">create_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject_dirs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/embeddingmanager.html#create_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.embeddingmanager.create_vectors" title="Link to this definition"></a></dt>
+<dd><p>Processes subject directories, converting PDFs to JSON and generating embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject_dirs</strong> (<em>list</em>) – List of subject directories to process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.embeddingmanager.delete_but_pdfs">
+<span class="sig-prename descclassname"><span class="pre">vilt.embeddingmanager.</span></span><span class="sig-name descname"><span class="pre">delete_but_pdfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject_dirs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/embeddingmanager.html#delete_but_pdfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.embeddingmanager.delete_but_pdfs" title="Link to this definition"></a></dt>
+<dd><p>Deletes all non-PDF files and subdirectories from the given subject directories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject_dirs</strong> (<em>list</em>) – List of directories to clean.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.embeddingmanager.parse_pdf_to_json">
+<span class="sig-prename descclassname"><span class="pre">vilt.embeddingmanager.</span></span><span class="sig-name descname"><span class="pre">parse_pdf_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/embeddingmanager.html#parse_pdf_to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.embeddingmanager.parse_pdf_to_json" title="Link to this definition"></a></dt>
+<dd><p>Extracts text from a PDF file and saves it as a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Path to the PDF file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vilt.embeddings_creation">
+<span id="vilt-embeddings-creation-module"></span><h2>vilt.embeddings_creation module<a class="headerlink" href="#module-vilt.embeddings_creation" title="Link to this heading"></a></h2>
+</section>
+<section id="module-vilt.embeddings_deletion">
+<span id="vilt-embeddings-deletion-module"></span><h2>vilt.embeddings_deletion module<a class="headerlink" href="#module-vilt.embeddings_deletion" title="Link to this heading"></a></h2>
+</section>
+<section id="module-vilt.infomanager">
+<span id="vilt-infomanager-module"></span><h2>vilt.infomanager module<a class="headerlink" href="#module-vilt.infomanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.infomanager.Conversation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.infomanager.</span></span><span class="sig-name descname"><span class="pre">Conversation</span></span><a class="reference internal" href="_modules/vilt/infomanager.html#Conversation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.Conversation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a conversation with metadata and feedback.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.infomanager.Conversation.set_conversation">
+<span class="sig-name descname"><span class="pre">set_conversation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keywords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#Conversation.set_conversation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.Conversation.set_conversation" title="Link to this definition"></a></dt>
+<dd><p>Sets conversation attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>str</em>) – The date when the conversation took place (format: DD/MM/YYYY).</p></li>
+<li><p><strong>time_init</strong> (<em>str</em>) – The start time of the conversation (format: HH:MM:SS).</p></li>
+<li><p><strong>time_end</strong> (<em>str</em>) – The end time of the conversation (format: HH:MM:SS).</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – The content of the conversation.</p></li>
+<li><p><strong>feedback</strong> (<em>dict</em>) – A dictionary containing feedback related to the conversation.</p></li>
+<li><p><strong>keywords</strong> (<em>list</em>) – A list of keywords extracted from the conversation.</p></li>
+<li><p><strong>active</strong> (<em>bool</em><em>, </em><em>optional</em>) – Indicates whether the conversation is active (default is False).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.infomanager.GlobalInfoSubject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.infomanager.</span></span><span class="sig-name descname"><span class="pre">GlobalInfoSubject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#GlobalInfoSubject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.GlobalInfoSubject" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents global information about a subject across students.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.infomanager.GlobalInfoSubject.set_global_info_subject">
+<span class="sig-name descname"><span class="pre">set_global_info_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#GlobalInfoSubject.set_global_info_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.GlobalInfoSubject.set_global_info_subject" title="Link to this definition"></a></dt>
+<dd><p>Associates a student with subject information values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>student</strong> (<em>str</em>) – The name or identifier of the student.</p></li>
+<li><p><strong>info_values</strong> (<a class="reference internal" href="#vilt.infomanager.InfoValues" title="vilt.infomanager.InfoValues"><em>InfoValues</em></a>) – The information values associated with the student for the subject.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.infomanager.InfoSubject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.infomanager.</span></span><span class="sig-name descname"><span class="pre">InfoSubject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#InfoSubject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.InfoSubject" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a subject with associated metadata.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.infomanager.InfoSubject.set_info_subject">
+<span class="sig-name descname"><span class="pre">set_info_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conversations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_keywords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#InfoSubject.set_info_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.InfoSubject.set_info_subject" title="Link to this definition"></a></dt>
+<dd><p>Updates subject information values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_time</strong> (<em>timedelta</em>) – Minimum recorded interaction time.</p></li>
+<li><p><strong>max_time</strong> (<em>timedelta</em>) – Maximum recorded interaction time.</p></li>
+<li><p><strong>total_time</strong> (<em>timedelta</em>) – Total accumulated interaction time.</p></li>
+<li><p><strong>times</strong> (<em>int</em>) – Total number of recorded interactions.</p></li>
+<li><p><strong>conversations</strong> (<em>list</em>) – List of conversations related to the subject.</p></li>
+<li><p><strong>global_keywords</strong> (<em>dict</em>) – Dictionary of global keywords and their frequencies.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.infomanager.InfoValues">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.infomanager.</span></span><span class="sig-name descname"><span class="pre">InfoValues</span></span><a class="reference internal" href="_modules/vilt/infomanager.html#InfoValues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.InfoValues" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores statistics and keyword information for a subject.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.infomanager.InfoValues.set_info_values">
+<span class="sig-name descname"><span class="pre">set_info_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conversations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_keywords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#InfoValues.set_info_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.InfoValues.set_info_values" title="Link to this definition"></a></dt>
+<dd><p>Sets specific values for the subject’s statistics and conversations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_time</strong> (<em>timedelta</em>) – Minimum recorded interaction time.</p></li>
+<li><p><strong>max_time</strong> (<em>timedelta</em>) – Maximum recorded interaction time.</p></li>
+<li><p><strong>total_time</strong> (<em>timedelta</em>) – Total accumulated interaction time.</p></li>
+<li><p><strong>times</strong> (<em>int</em>) – Total number of recorded interactions.</p></li>
+<li><p><strong>conversations</strong> (<em>list</em>) – List of conversations related to the subject.</p></li>
+<li><p><strong>global_keywords</strong> (<em>dict</em>) – Dictionary of global keywords and their frequencies.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.infomanager.get_career_subject_from_string">
+<span class="sig-prename descclassname"><span class="pre">vilt.infomanager.</span></span><span class="sig-name descname"><span class="pre">get_career_subject_from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#get_career_subject_from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.get_career_subject_from_string" title="Link to this definition"></a></dt>
+<dd><p>Extracts career and subject from a formatted string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<em>str</em>) – A formatted string containing career and subject.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>career</strong> (<em>str</em>) – Extracted career name.</p></li>
+<li><p><strong>subject</strong> (<em>str</em>) – Extracted subject name.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.infomanager.get_string_from_career_subject">
+<span class="sig-prename descclassname"><span class="pre">vilt.infomanager.</span></span><span class="sig-name descname"><span class="pre">get_string_from_career_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#get_string_from_career_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.get_string_from_career_subject" title="Link to this definition"></a></dt>
+<dd><p>Converts a subject dictionary into a formatted string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<em>dict</em>) – A dictionary containing ‘career’ and ‘subject’ keys.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>result</strong> – A formatted string combining career and subject.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.infomanager.update_subject_keywords">
+<span class="sig-prename descclassname"><span class="pre">vilt.infomanager.</span></span><span class="sig-name descname"><span class="pre">update_subject_keywords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#update_subject_keywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.update_subject_keywords" title="Link to this definition"></a></dt>
+<dd><p>Updates keyword frequency for a given subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>current_subject</strong> (<em>dict</em>) – A dictionary containing conversations and keywords.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>global_keywords</strong> – A dictionary mapping keywords to their frequency.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.infomanager.update_subject_parameters">
+<span class="sig-prename descclassname"><span class="pre">vilt.infomanager.</span></span><span class="sig-name descname"><span class="pre">update_subject_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/infomanager.html#update_subject_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.infomanager.update_subject_parameters" title="Link to this definition"></a></dt>
+<dd><p>Computes time-related statistics for a subject’s conversations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subject</strong> (<em>dict</em>) – A dictionary containing conversation data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>total_time</strong> (<em>float</em>) – Total conversation time in minutes.</p></li>
+<li><p><strong>max_time</strong> (<em>float</em>) – Maximum conversation time in minutes.</p></li>
+<li><p><strong>min_time</strong> (<em>float</em>) – Minimum conversation time in minutes.</p></li>
+<li><p><strong>times</strong> (<em>int</em>) – Number of conversations.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vilt.keywordsmanager">
+<span id="vilt-keywordsmanager-module"></span><h2>vilt.keywordsmanager module<a class="headerlink" href="#module-vilt.keywordsmanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.keywordsmanager.KeywordsManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.keywordsmanager.</span></span><span class="sig-name descname"><span class="pre">KeywordsManager</span></span><a class="reference internal" href="_modules/vilt/keywordsmanager.html#KeywordsManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.keywordsmanager.KeywordsManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages the extraction of keywords from student queries during chatbot interactions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.keywordsmanager.KeywordsManager.generate_keywords">
+<span class="sig-name descname"><span class="pre">generate_keywords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/keywordsmanager.html#KeywordsManager.generate_keywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.keywordsmanager.KeywordsManager.generate_keywords" title="Link to this definition"></a></dt>
+<dd><p>Extracts keywords from a given text using an AI model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The input text to analyze and extract keywords from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>response</strong> – A list of extracted keywords as strings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-vilt.promptmanager">
+<span id="vilt-promptmanager-module"></span><h2>vilt.promptmanager module<a class="headerlink" href="#module-vilt.promptmanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.promptmanager.PromptManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.promptmanager.</span></span><span class="sig-name descname"><span class="pre">PromptManager</span></span><a class="reference internal" href="_modules/vilt/promptmanager.html#PromptManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.promptmanager.PromptManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages prompt files by reading and storing them in a dictionary.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.promptmanager.PromptManager.read_prompts">
+<span class="sig-name descname"><span class="pre">read_prompts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/promptmanager.html#PromptManager.read_prompts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.promptmanager.PromptManager.read_prompts" title="Link to this definition"></a></dt>
+<dd><p>Reads all <cite>.prompt</cite> files from the prompts directory and stores them in a dictionary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-vilt.timemanager">
+<span id="vilt-timemanager-module"></span><h2>vilt.timemanager module<a class="headerlink" href="#module-vilt.timemanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.timemanager.ProcessTimer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.timemanager.</span></span><span class="sig-name descname"><span class="pre">ProcessTimer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mdict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#ProcessTimer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.ProcessTimer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Process</span></code></p>
+<p>A process that manages a countdown timer for a specific user session.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.ProcessTimer.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#ProcessTimer.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.ProcessTimer.run" title="Link to this definition"></a></dt>
+<dd><p>Runs the process timer, decrementing the timeout value at intervals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.ProcessTimer.update_timeout">
+<span class="sig-name descname"><span class="pre">update_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#ProcessTimer.update_timeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.ProcessTimer.update_timeout" title="Link to this definition"></a></dt>
+<dd><p>Updates the timeout value for the user’s session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>int</em>) – The new timeout value to set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.timemanager.</span></span><span class="sig-name descname"><span class="pre">TimeManager</span></span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages multiple ProcessTimer instances to track session timeouts for users.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager.add_process">
+<span class="sig-name descname"><span class="pre">add_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager.add_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager.add_process" title="Link to this definition"></a></dt>
+<dd><p>Adds a new ProcessTimer for a user session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email address of the user whose session will be tracked.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the process was started successfully, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager.create_dict">
+<span class="sig-name descname"><span class="pre">create_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager.create_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager.create_dict" title="Link to this definition"></a></dt>
+<dd><p>Creates a shared dictionary for session management.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager.end_all_process">
+<span class="sig-name descname"><span class="pre">end_all_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager.end_all_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager.end_all_process" title="Link to this definition"></a></dt>
+<dd><p>Ends all active session processes and shuts down the manager.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager.end_process">
+<span class="sig-name descname"><span class="pre">end_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager.end_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager.end_process" title="Link to this definition"></a></dt>
+<dd><p>Ends a specific user session process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email address of the user session to terminate.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager.get_process_by_email">
+<span class="sig-name descname"><span class="pre">get_process_by_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager.get_process_by_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager.get_process_by_email" title="Link to this definition"></a></dt>
+<dd><p>Finds the position of a ProcessTimer by user email.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email address of the user session to find.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The index of the process in the list, or -1 if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager.is_active"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager.is_active" title="Link to this definition"></a></dt>
+<dd><p>Checks if a user’s session is still active.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email address of the user to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the session is active, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager.is_logged">
+<span class="sig-name descname"><span class="pre">is_logged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager.is_logged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager.is_logged" title="Link to this definition"></a></dt>
+<dd><p>Checks if a user has an active session process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email address of the user to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the user has an active session, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.timemanager.TimeManager.reset_process">
+<span class="sig-name descname"><span class="pre">reset_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/timemanager.html#TimeManager.reset_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.timemanager.TimeManager.reset_process" title="Link to this definition"></a></dt>
+<dd><p>Resets the timeout for an existing session process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email address of the user session to reset.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the process timeout was reset, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-vilt.usermanager">
+<span id="vilt-usermanager-module"></span><h2>vilt.usermanager module<a class="headerlink" href="#module-vilt.usermanager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.usermanager.HistoryUserManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.usermanager.</span></span><span class="sig-name descname"><span class="pre">HistoryUserManager</span></span><a class="reference internal" href="_modules/vilt/usermanager.html#HistoryUserManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.HistoryUserManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages historical user data, allowing retrieval and deletion of past users.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.HistoryUserManager.add_history_user">
+<span class="sig-name descname"><span class="pre">add_history_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#HistoryUserManager.add_history_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.HistoryUserManager.add_history_user" title="Link to this definition"></a></dt>
+<dd><p>Adds a deleted user to the history database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user</strong> (<em>dict</em>) – The user data to be stored.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.HistoryUserManager.delete_history_user">
+<span class="sig-name descname"><span class="pre">delete_history_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#HistoryUserManager.delete_history_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.HistoryUserManager.delete_history_user" title="Link to this definition"></a></dt>
+<dd><p>Deletes a specific historic user based on email and date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email of the user to delete.</p></li>
+<li><p><strong>date</strong> (<em>str</em>) – The date when the user was stored in history.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.HistoryUserManager.delete_history_users">
+<span class="sig-name descname"><span class="pre">delete_history_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#HistoryUserManager.delete_history_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.HistoryUserManager.delete_history_users" title="Link to this definition"></a></dt>
+<dd><p>Deletes all users from the history database.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.usermanager.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.usermanager.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'teacher'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.User" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a system user with attributes like name, email, role, and password.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vilt.usermanager.</span></span><span class="sig-name descname"><span class="pre">UserManager</span></span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages user operations in the database, such as adding, deleting, and modifying users.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.add_subject">
+<span class="sig-name descname"><span class="pre">add_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.add_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.add_subject" title="Link to this definition"></a></dt>
+<dd><p>A method to assign a subject to a user (usually a teacher or a student).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The desired career to filter.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The desired subject to filter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.add_user">
+<span class="sig-name descname"><span class="pre">add_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.add_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.add_user" title="Link to this definition"></a></dt>
+<dd><p>Adds a new user to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user</strong> (<em>dict</em>) – The user data in dictionary format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.delete_user">
+<span class="sig-name descname"><span class="pre">delete_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_history</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.delete_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.delete_user" title="Link to this definition"></a></dt>
+<dd><p>Removes a user from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – Email of the user to delete.</p></li>
+<li><p><strong>add_history</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, stores the deleted user in the history database (default is True).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.end_conversation">
+<span class="sig-name descname"><span class="pre">end_conversation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.end_conversation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.end_conversation" title="Link to this definition"></a></dt>
+<dd><p>A method to finish a conversation with the chatbot for the specific user identified by the email address.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The desired career to filter.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The desired subject to filter.</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – The finished conversation between the user and the chatbot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.find_active_conversation_from_subject">
+<span class="sig-name descname"><span class="pre">find_active_conversation_from_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.find_active_conversation_from_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.find_active_conversation_from_subject" title="Link to this definition"></a></dt>
+<dd><p>A function to find possible active conversations related to a specific subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The desired career to filter.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The desired subject to filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>position</strong> (<em>int</em>) – The position of the subject in the list of assigned subjects of the user. Note that if it is equal -1 then there is no related subject.</p></li>
+<li><p><strong>conv_position</strong> (<em>int</em>) – The position of the conversation in the list of conversations related to the subject. Note that if it is equal -1 then there is no conversation related to the assigned subject.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.find_conversation">
+<span class="sig-name descname"><span class="pre">find_conversation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.find_conversation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.find_conversation" title="Link to this definition"></a></dt>
+<dd><p>A function to gather conversations from a subject by the user with the specific email address.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>)</p></li>
+<li><p><strong>user.</strong> (<em>The email address</em><em> of </em><em>the</em>)</p></li>
+<li><p><strong>position</strong> (<em>int</em>) – The position of the conversation in the list of assigned subjects of the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sub_position</strong> – The position of the conversation in the list of conversations related to the assigned subjects of the user. Note that if it is equal -1 then there is no conversation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.get_users_by_subject">
+<span class="sig-name descname"><span class="pre">get_users_by_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'student'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.get_users_by_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.get_users_by_subject" title="Link to this definition"></a></dt>
+<dd><p>A function to gather the users of a specific subject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>selected_career</strong> (<em>str</em>) – The desired career to filter.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The desired subject to filter.</p></li>
+<li><p><strong>role</strong> (<em>str</em>) – The role of the users to gather.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>enrolled</strong> (<em>list</em>)</p></li>
+<li><p><em>The list of users with the indicated career, subject, and role.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.has_active_conversation">
+<span class="sig-name descname"><span class="pre">has_active_conversation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.has_active_conversation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.has_active_conversation" title="Link to this definition"></a></dt>
+<dd><p>A function to know if the user has a similar conversation still active.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The desired career to filter.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The desired subject to filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>active</strong> – The flag to indicate if the conversation is still active.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.has_user_subject">
+<span class="sig-name descname"><span class="pre">has_user_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.has_user_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.has_user_subject" title="Link to this definition"></a></dt>
+<dd><p>A function to validate if a user has a specific subject assigned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The desired career to filter.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The desired subject to filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>position</strong> – The position of the subject in the list of assigned subjects of the user. Note that if it is equal -1 then the subject is not assigned to that user.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.query_user">
+<span class="sig-name descname"><span class="pre">query_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.query_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.query_user" title="Link to this definition"></a></dt>
+<dd><p>Retrieves a user from the database based on email and password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email of the user to query.</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – The password of the user (will be hashed before querying).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>users</strong> – A list of users that match the provided email and password.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.query_users_by_email">
+<span class="sig-name descname"><span class="pre">query_users_by_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.query_users_by_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.query_users_by_email" title="Link to this definition"></a></dt>
+<dd><p>Retrieves users associated with a given email.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email of the users to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>users</strong> – A list of users matching the email.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.query_users_by_role">
+<span class="sig-name descname"><span class="pre">query_users_by_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.query_users_by_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.query_users_by_role" title="Link to this definition"></a></dt>
+<dd><p>Retrieves all users from the database with a specific role.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>role</strong> (<em>str</em>) – The role of the users to retrieve (e.g., ‘admin’, ‘student’, ‘teacher’).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>users</strong> – A list of users that match the specified role.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.remove_subject">
+<span class="sig-name descname"><span class="pre">remove_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.remove_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.remove_subject" title="Link to this definition"></a></dt>
+<dd><p>A method to retire a subject to a user (usually a teacher or a student).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The desired career to filter.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The desired subject to filter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.start_conversation">
+<span class="sig-name descname"><span class="pre">start_conversation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_career</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_subject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.start_conversation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.start_conversation" title="Link to this definition"></a></dt>
+<dd><p>”
+A method to start a conversation with the chatbot for the specific user identified by the email address.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p></li>
+<li><p><strong>selected_career</strong> (<em>str</em>) – The desired career to filter.</p></li>
+<li><p><strong>selected_subject</strong> (<em>str</em>) – The desired subject to filter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vilt.usermanager.UserManager.update_feedback">
+<span class="sig-name descname"><span class="pre">update_feedback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conv_position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utility_feedback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_feedback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision_feedback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#UserManager.update_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.UserManager.update_feedback" title="Link to this definition"></a></dt>
+<dd><p>A method to include the opinion of the users about the performance of the chatbot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>str</em>) – The email address of the user.</p></li>
+<li><p><strong>position</strong> (<em>int</em>) – The position of the subject in the list of assigned subjects of the user.</p></li>
+<li><p><strong>conv_position</strong> (<em>int</em>) – The position of the conversation in the list of conversations related to the selected subjects of the user.</p></li>
+<li><p><strong>utility_feedback</strong> (<em>str</em>) – The value of the utility feedback provided by the user.</p></li>
+<li><p><strong>learning_feedback</strong> (<em>str</em>) – The value of the learning feedback provided by the user.</p></li>
+<li><p><strong>precision_feedback</strong> (<em>str</em>) – The value of the precision feedback provided by the user.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vilt.usermanager.to_json">
+<span class="sig-prename descclassname"><span class="pre">vilt.usermanager.</span></span><span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serializable_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vilt/usermanager.html#to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vilt.usermanager.to_json" title="Link to this definition"></a></dt>
+<dd><p>Converts a serializable object into a JSON-formatted string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>serializable_obj</strong> (<em>object</em>) – The object to be serialized.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>json_result</strong> – The JSON-encoded representation of the object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vilt">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-vilt" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alberto Fernández Isabel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

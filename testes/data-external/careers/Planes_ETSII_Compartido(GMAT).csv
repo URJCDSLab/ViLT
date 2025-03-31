@@ -1,0 +1,56 @@
+CURSO 1º;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Álgebra Lineal;FBR;6
+1;Fundamentos Biológicos;FBR;6
+1;Lógica;OB;6
+1;Introducción a la Programación;FBC;6
+1;Matemática Discreta;OB;6
+2;Estructuras Algebraicas;OB;6
+2;Cálculo;FBR;6
+2;Fundamentos Físicos;FBR;6
+2;Ética, Legislación y Protección de Datos;FBC;6
+2;Probabilidad;OB;6
+;;;
+CURSO 2º;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Lenguajes Formales;OB;6
+1;Historia de la Ciencia y las Matemáticas;FBC;6
+1;Geometría Afín;OB;6
+1;Metodología de la Programación;OB;6
+2;Estructuras Algebraicas Avanzadas;OB;6
+2;Métodos Estadísticos de Gestión e Investigación;OB;6
+2;Análisis Vectorial I;FBR;6
+2;Fundamentos Químicos;FBR;6
+2;Topología;OB;6
+Anual;Idioma Moderno;FBC;6
+;;;
+;;;
+CURSO 3º;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Análisis Vectorial II;OB;6
+1;Ecuaciones Diferenciales Ordinarias;OB;6
+1;Modelos de Datos y de la Información;OB;6
+1;Curvas y Superficies;OB;6
+1;Estadística Matemática;OB;6
+2;Variable Compleja y Análisis Funcional;OB;6
+2;Ecuaciones en Derivadas Parciales;OB;6
+2;Modelado del Software;OB;6
+2;Geometría computacional;OB;6
+2;Diseño y Análisis de Algoritmos;OB;6
+;;;
+CURSO 4º;Total de créditos a cursar: 60;;
+Semestre;Asignatura;Carácter;Créditos
+1;Métodos Numéricos;OB;6
+1;Optativa 1;OP;6
+1;Optativa 2;OP;6
+1;Optativa 3;OP;6
+1;Reconocimiento Académico de Créditos;OB;6
+Anual;Trabajo Fin de Grado;OB;15
+Anual;Prácticas Externas;OB;15
+;;;
+OPTATIVAS    ;;;
+ Semestre;Asignatura;Carácter;Créditos
+ 1;Minería de Datos ;OP;6
+ 1;Optimización y análisis de redes;OP;6
+ 1;Modelos estadísticos para la predicción;OP;6
+ 1;Variable Real;OP;6

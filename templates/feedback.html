@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css')}}">
+    <title>ViLT</title>
+</head>
+<body>
+<header>
+    <div class="image_header_vilt">
+        <form method="post" action="/reset-page">
+            <input type="hidden" name="email_hidden" value="{{email}}" />
+            <input type="hidden" name="career_hidden" value="{{selected_career}}" />
+            <input type="hidden" name="subject_hidden" value="{{selected_subject}}" />
+            <button class="iconic" type="submit">
+                <img src= "{{url_for('static', filename='img/vilt.png')}}"
+                     alt="Vilt Logo" class="responsive" width="150" height="150">
+            </button>
+        </form>
+    </div>
+    <div class="image_header_dslab">
+        <img src= "{{url_for('static', filename='img/dslab_logo.png')}}" alt="DSLab Logo" class="responsive" width="450" height="150">
+    </div>
+</header>
+
+<main>
+    <div class="div-close">
+         <form method="post" action="/logout">
+             <input type="hidden" name="email_hidden" value="{{email}}" />
+             <label>
+                 <button class="button-close">Cerrar sesión</button>
+             </label>
+         </form>
+     </div>
+
+    <div class="text">
+        <h1 class="text-title">Retroalimentación sobre el chatbot</h1>
+        <h3>Asignatura: {{selected_subject}} de la titulación: {{selected_career}}.</h3>
+        <p>Las respuestas proporcionadas servirán para mejorar el sistema, comprobar su utilidad y funcionamiento.<br>
+            Las valoraciones funcionan de la siguiente manera:
+        </p>
+        <ul>
+            <li>Valor mínimo: experiencia nada satisfactoria.</li>
+            <li>Valor máximo: experiencia completamente satisfactoria.</li>
+        </ul>
+        <p>
+            Se debe valorar <b>tres diferentes perspectivas</b>:
+        </p>
+        <ul>
+            <li>Utilidad de la herramienta para el estudiante.</li>
+            <li>Calidad del aprendizaje obtenido.</li>
+            <li>Precisión del tutor en las respuestas.</li>
+        </ul>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                var messages = {{ messages|safe }};
+                for (var i=0; i<messages.length; i++) {
+                    alert(messages[i]);
+                }
+            </script>
+        {% endif %}
+    {% endwith %}
+
+    <form id="progress" method="post" class="admin-form_feedback"  action="/feedback-process">
+        <input type="hidden" name="email_hidden" value="{{email}}" />
+        <input type="hidden" name="career_hidden" value="{{selected_career}}" />
+        <input type="hidden" name="subject_hidden" value="{{selected_subject}}" />
+        <input type="hidden" name="pos_hidden" value="{{pos}}" />
+        <input type="hidden" name="conv_pos_hidden" value="{{conv_pos}}" />
+        <label for="utility" class="title-form"> Utilidad de la herramienta:</label>
+        <div id="utility" class="div-progress">
+            <input type="radio" id="u0" value="0" name="utility-steps" class="progressbar__radio">
+            <label for="u0" class="progressbar__label">0</label>
+            <input type="radio" id="u1" value="1" name="utility-steps" class="progressbar__radio">
+            <label for="u1" class="progressbar__label">1</label>
+            <input type="radio" id="u2" value="2" name="utility-steps" class="progressbar__radio">
+            <label for="u2" class="progressbar__label">2</label>
+            <input type="radio" id="u3" value="3" name="utility-steps" class="progressbar__radio">
+            <label for="u3" class="progressbar__label">3</label>
+            <input type="radio" id="u4" value="4" name="utility-steps" class="progressbar__radio">
+            <label for="u4" class="progressbar__label">4</label>
+            <input type="radio" id="u5" value="5" name="utility-steps" class="progressbar__radio" checked>
+            <label for="u5" class="progressbar__label">5</label>
+            <input type="radio" id="u6" value="6" name="utility-steps" class="progressbar__radio">
+            <label for="u6" class="progressbar__label">6</label>
+            <input type="radio" id="u7" value="7" name="utility-steps" class="progressbar__radio">
+            <label for="u7" class="progressbar__label">7</label>
+            <input type="radio" id="u8" value="8" name="utility-steps" class="progressbar__radio">
+            <label for="u8" class="progressbar__label">8</label>
+            <input type="radio" id="u9" value="9" name="utility-steps" class="progressbar__radio">
+            <label for="u9" class="progressbar__label">9</label>
+            <input type="radio" id="u10" value="10" name="utility-steps" class="progressbar__radio">
+            <label for="u10" class="progressbar__label">10</label>
+            </div>
+        <label for="learning" class="title-form">Calidad del aprendizaje:</label>
+        <div id="learning" class="div-progress">
+            <input type="radio" id="l0" value="0" name="learning-steps" class="progressbar__radio">
+            <label for="l0" class="progressbar__label">0</label>
+            <input type="radio" id="l1" value="1" name="learning-steps" class="progressbar__radio">
+            <label for="l1" class="progressbar__label">1</label>
+            <input type="radio" id="l2" value="2" name="learning-steps" class="progressbar__radio">
+            <label for="l2" class="progressbar__label">2</label>
+            <input type="radio" id="l3" value="3" name="learning-steps" class="progressbar__radio">
+            <label for="l3" class="progressbar__label">3</label>
+            <input type="radio" id="l4" value="4" name="learning-steps" class="progressbar__radio">
+            <label for="l4" class="progressbar__label">4</label>
+            <input type="radio" id="l5" value="5" name="learning-steps" class="progressbar__radio" checked>
+            <label for="l5" class="progressbar__label">5</label>
+            <input type="radio" id="l6" value="6" name="learning-steps" class="progressbar__radio">
+            <label for="l6" class="progressbar__label">6</label>
+            <input type="radio" id="l7"  value="7" name="learning-steps" class="progressbar__radio">
+            <label for="l7" class="progressbar__label">7</label>
+            <input type="radio" id="l8" value="8" name="learning-steps" class="progressbar__radio">
+            <label for="l8" class="progressbar__label">8</label>
+            <input type="radio" id="l9" value="9" name="learning-steps" class="progressbar__radio">
+            <label for="l9" class="progressbar__label">9</label>
+            <input type="radio" id="l10" value="10" name="learning-steps" class="progressbar__radio">
+            <label for="l10" class="progressbar__label">10</label>
+        </div>
+        <label for="precision" class="title-form">Precisión de las respuestas:</label>
+        <div id="precision" class="div-progress">
+            <input type="radio" id="p0" value="0" name="precision-steps" class="progressbar__radio">
+            <label for="p0" class="progressbar__label">0</label>
+            <input type="radio" id="p1" value="1" name="precision-steps" class="progressbar__radio">
+            <label for="p1" class="progressbar__label">1</label>
+            <input type="radio" id="p2" value="2" name="precision-steps" class="progressbar__radio">
+            <label for="p2" class="progressbar__label">2</label>
+            <input type="radio" id="p3" value="3" name="precision-steps" class="progressbar__radio">
+            <label for="p3" class="progressbar__label">3</label>
+            <input type="radio" id="p4" value="4" name="precision-steps" class="progressbar__radio">
+            <label for="p4" class="progressbar__label">4</label>
+            <input type="radio" id="p5" value="5" name="precision-steps" class="progressbar__radio" checked>
+            <label for="p5" class="progressbar__label">5</label>
+            <input type="radio" id="p6" value="6" name="precision-steps" class="progressbar__radio">
+            <label for="p6" class="progressbar__label">6</label>
+            <input type="radio" id="p7"  value="7" name="precision-steps" class="progressbar__radio">
+            <label for="p7" class="progressbar__label">7</label>
+            <input type="radio" id="p8" value="8" name="precision-steps" class="progressbar__radio">
+            <label for="p8" class="progressbar__label">8</label>
+            <input type="radio" id="p9" value="9" name="precision-steps" class="progressbar__radio">
+            <label for="p9" class="progressbar__label">9</label>
+            <input type="radio" id="p10" value="10" name="precision-steps" class="progressbar__radio">
+            <label for="p10" class="progressbar__label">10</label>
+        </div>
+        <button id="option-click" class="action-button" type="submit">Aceptar</button>
+    </form>
+
+    <div class="div-back">
+        <form method="post" action="/go-main-back">
+            <input type="hidden" name="email_hidden" value="{{email}}" />
+            <input type="hidden" name="career_hidden" value="{{selected_career}}" />
+            <input type="hidden" name="subject_hidden" value="{{selected_subject}}" />
+
+            <button class="iconic" type="submit">
+                <img src= "{{url_for('static', filename='img/back.png')}}"
+                         alt="Back Logo" class="responsive" width="30" height="30">
+            </button>
+        </form>
+    </div>
+</main>
+<footer>
+    <div class="credits">
+        <p class="developers">
+            <a href="mailto:alberto.fernandez.isabel@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Alberto Fernández Isabel</br>
+            <a href="mailto:isaac.martin@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Isaac Martín de Diego </br>
+        </p>
+    </div>
+</footer>
+</body>
+</html>

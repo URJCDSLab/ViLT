@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css')}}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    <title>ViLT</title>
+</head>
+<body>
+    <header>
+        <div class="image_header_vilt">
+            <form method="post" action="/reset-page">
+                <input type="hidden" name="email_hidden" value="{{email}}" />
+                <button class="iconic" type="submit">
+                    <img src= "{{url_for('static', filename='img/vilt.png')}}"
+                         alt="Vilt Logo" class="responsive" width="150" height="150">
+                </button>
+            </form>
+        </div>
+        <div class="image_header_dslab">
+            <img src= "{{url_for('static', filename='img/dslab_logo.png')}}" alt="DSLab Logo" class="responsive" width="450" height="150">
+        </div>
+    </header>
+    <main>
+        <div class="div-close">
+            <form method="post" action="/logout">
+                <input type="hidden" name="email_hidden" value="{{email}}" />
+                <label>
+                    <button class="button-close">Cerrar sesión</button>
+                </label>
+            </form>
+        </div>
+
+        <div class="text">
+            <h1 class="text-title">Inclusión de estudiantes</h1>
+            <h4>{{selected_subject}} de la titulación {{selected_career}}</h4>
+            <div class="info-admin">
+                 <p>
+                     Recuerda que debes rellenar todos los campos que se solicitan. <br>
+                     El nuevo estudiante se añadira a la asignatura, <br>
+                     y si no está aún en el sistema se le almacenará para que pueda <br>
+                     utilizar el tutor virtual.
+                 </p>
+             </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <script>
+                    var messages = {{ messages | safe }};
+                    for (var i=0; i<messages.length; i++) {
+                        alert(messages[i]);
+                    }
+                </script>
+                {% endif %}
+            {% endwith %}
+
+             <form class="admin-form" method="post" action="/admin-add-man-students">
+                 <input type="hidden" name="career_hidden" value="{{selected_career}}" />
+                 <input type="hidden" name="subject_hidden" value="{{selected_subject}}" />
+                 <input type="hidden" name="email_hidden" value="{{email}}" />
+
+                 <p class="title-form">Introduzca la información solicitada:</p>
+                 <div>
+                     <input type="text" id="new-name" name="new-name" value="" required/>
+                     <label for="new-name">Nombre</label>
+                 </div>
+                 <div>
+                     <input type="text" id="new-surname" name="new-surname" value="" required/>
+                     <label for="new-surname">Apellidos</label>
+                 </div>
+                 <div>
+                     <input type="text" id="new-id" name="new-id" value="" required/>
+                     <label for="new-id">DNI/NIE</label>
+                 </div>
+                 <div>
+                     <input type="text" id="new-email" name="new-email" value="" required/>
+                     <label for="new-email">E-mail</label>
+                 </div>
+
+                 <button id="add-teacher-click" onclick="return validateStudent()" class="action-button" type="submit">Aceptar</button>
+             </form>
+        </div>
+
+        <div class="div-back">
+            <form method="post" action="/admin-consult-students">
+                <input type="hidden" name="email_hidden" value="{{email}}" />
+                <input type="hidden" name="career_hidden" value="{{selected_career}}" />
+                <input type="hidden" name="subject_hidden" value="{{selected_subject}}" />
+                <button class="iconic" type="submit">
+                    <img src= "{{url_for('static', filename='img/back.png')}}"
+                         alt="Back Logo" class="responsive" width="30" height="30">
+                </button>
+            </form>
+        </div>
+    </main>
+    <footer>
+         <div class="credits">
+             <p class="developers">
+                 <a href="mailto:alberto.fernandez.isabel@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Alberto Fernández Isabel</br>
+                 <a href="mailto:isaac.martin@urjc.es"><img src="{{url_for('static', filename='img/sobre.png')}}" width="16" height="16"></a> Isaac Martín de Diego </br>
+             </p>
+         </div>
+    </footer>
+</body>
+</html>
